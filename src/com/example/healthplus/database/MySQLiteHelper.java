@@ -27,11 +27,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	private static final String TBL_SLEEP = "SLEEP";
 	private static final String TBL_ACTIVITIES = "ACTIVITIES";
 
-	private static final String TABLE_WATER_CREATE = "CREATE TABLE " + TABLE_NAME 
+	private static final String TABLE_WATER_CREATE = "CREATE TABLE  IF NOT EXISTS " + TABLE_NAME 
 			+ " ( " + COLUMN_ID + " TEXT PRIMARY KEY NOT NULL, " 
 			+  " AMOUNT INTEGER DEFAULT 0 );"	;
 
-	private static final String TABLE_FOOD_CREATE = "CREATE TABLE " + TBL_FOOD 
+	private static final String TABLE_FOOD_CREATE = "CREATE TABLE IF NOT EXISTS " + TBL_FOOD 
 			+ " (" + COLUMN_ID + " TEXT PRIMARY KEY NOT NULL,  "
 			+ " CALORIES REAL DEFAULT 0.0, "
 			+ " CARBS REAL DEFAULT 0.0, "
@@ -40,13 +40,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 			+ " PROTEIN REAL DEFAULT 0.0, "
 			+ " SODIUM REAL DEFAULT 0.0 );";
 
-	private static final String TABLE_SLEEP_CREATE = "CREATE TABLE " + TBL_SLEEP
+	private static final String TABLE_SLEEP_CREATE = "CREATE TABLE  IF NOT EXISTS " + TBL_SLEEP
 			+ " (" + COLUMN_ID + " TEXT PRIMARY KEY NOT NULL, "
 			+ " TOTAL_SLEEP_RECORD REAL DEFAULT 0.0, "
 			+ " TOTAL_MINUTES_ASLEEP REAL DEFAULT 0.0, "
 			+ " MINUTES_AWAKE REAL DEFAULT 0.0 ); ";
 
-	private static final String TABLE_ACTIVITIES_CREATE = "CREATE TABLE " + TBL_ACTIVITIES
+	private static final String TABLE_ACTIVITIES_CREATE = "CREATE TABLE  IF NOT EXISTS " + TBL_ACTIVITIES
 			+ " ( " + COLUMN_ID + " TEXT PRIMARY KEY NOT NULL , "
 			+ " DISTANCES REAL DEFAULT 0.0," 
 			+ " ACTIVITY_CALORIES REAL DEFAULT 0.0 ); ";
@@ -84,7 +84,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		// The format is the same as CURRENT_TIMESTAMP: "YYYY-MM-DD"
 		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		 DateFormat.getDateInstance();
+		DateFormat.getDateInstance();
 		return sdf.format(date);
 	}
 
