@@ -1,8 +1,6 @@
 package com.example.healthplus.database;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,11 +8,11 @@ import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.healthplus.utils.ApiCallHelper;
 import com.example.healthplus.utils.DateUtil;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
@@ -26,16 +24,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	public static final String TBL_WATER = "WATER";
 	public static final String COLUMN_AMOUNT = "AMOUNT";
 	private static final String TABLE_WATER_CREATE = "CREATE TABLE  IF NOT EXISTS " + TBL_WATER 
-			+ " ( " + COLUMN_ID + " TEXT PRIMARY KEY NOT NULL, " 
-			+  " AMOUNT INTEGER DEFAULT 0 );"	;
+			+ " ( " + COLUMN_ID + " date PRIMARY KEY NOT NULL, " 
+			+  " AMOUNT REAL DEFAULT 0.0 );"	;
 
 	private static final String TBL_FOOD = "FOOD";
-	private static final String TBL_SLEEP = "SLEEP";
-	private static final String TBL_ACTIVITIES = "ACTIVITIES";
-
-
 	private static final String TABLE_FOOD_CREATE = "CREATE TABLE IF NOT EXISTS " + TBL_FOOD 
-			+ " (" + COLUMN_ID + " TEXT PRIMARY KEY NOT NULL,  "
+			+ " (" + COLUMN_ID + " date PRIMARY KEY NOT NULL,  "
 			+ " CALORIES REAL DEFAULT 0.0, "
 			+ " CARBS REAL DEFAULT 0.0, "
 			+ " FAT REAL DEFAULT 0.0, "
@@ -43,17 +37,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 			+ " PROTEIN REAL DEFAULT 0.0, "
 			+ " SODIUM REAL DEFAULT 0.0 );";
 
+	private static final String TBL_SLEEP = "SLEEP";
 	private static final String TABLE_SLEEP_CREATE = "CREATE TABLE  IF NOT EXISTS " + TBL_SLEEP
-			+ " (" + COLUMN_ID + " TEXT PRIMARY KEY NOT NULL, "
-			+ " TOTAL_MINUTES_ASLEEP INTEGER DEFAULT 0, "
-			+ " RESTLESS_DURATION INTEGER DEFAULT 0, "
-			+ " MINUTES_AWAKE INTEGER DEFAULT 0 ); ";
+			+ " (" + COLUMN_ID + " date PRIMARY KEY NOT NULL, "
+			+ " TOTAL_MINUTES_ASLEEP REAL DEFAULT 0.0, "
+			+ " RESTLESS_DURATION REAL DEFAULT 0.0, "
+			+ " MINUTES_AWAKE REAL DEFAULT 0 ); ";
 
+	private static final String TBL_ACTIVITIES = "ACTIVITIES";
 	private static final String TABLE_ACTIVITIES_CREATE = "CREATE TABLE  IF NOT EXISTS " + TBL_ACTIVITIES
-			+ " ( " + COLUMN_ID + " TEXT PRIMARY KEY NOT NULL , "
+			+ " ( " + COLUMN_ID + " date PRIMARY KEY NOT NULL , "
 			+ " DISTANCE REAL DEFAULT 0.0, " 
 			+ " CALORIES_OUT REAL DEFAULT 0.0, "
-			+ " STEPS INTEGER DEFAULT 0 ); ";
+			+ " STEPS REAL DEFAULT 0 ); ";
 
 	public MySQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -65,8 +61,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL(TABLE_FOOD_CREATE);
 		db.execSQL(TABLE_SLEEP_CREATE);
 		db.execSQL(TABLE_ACTIVITIES_CREATE);
-		//db.execSQL(TABLE_INSERT);
-
 	}
 
 	@Override
@@ -81,14 +75,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVITIES_CREATE);
 
 		onCreate(db);
-	}
-
-	// FITBIT DATE FORMAT = 2010-02-25.json.
-	public static String dateToSqliteDateString(String date) {
-		// The format is the same as CURRENT_TIMESTAMP: "YYYY-MM-DD"
-		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		return sdf.format(date);
 	}
 
 	// Insert record into the database
@@ -116,8 +102,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 		JSONObject sleepJSON = new JSONObject(sleepStr);		
 		String totalMinutesAsleep = new JSONObject(sleepJSON.getString("summary")).getString("totalMinutesAsleep");
-		int totalMinutesAwake = computeMiutesAwake(sleepJSON.getJSONArray("sleep"));
-		int totalRestlessMinutes = computeRestlessMinutes(sleepJSON.getJSONArray("sleep"));
+		float totalMinutesAwake = computeMiutesAwake(sleepJSON.getJSONArray("sleep"));
+		float totalRestlessMinutes = computeRestlessMinutes(sleepJSON.getJSONArray("sleep"));
 
 		// Open database connnection
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -171,9 +157,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		String calories_out = new JSONObject(activitiesJSON.getString("summary")).getString("caloriesOut");
 		String steps  = new JSONObject(activitiesJSON.getString("summary")).getString("steps");
 		float distance = computeDistance(new JSONObject(activitiesJSON.getString("summary")).getJSONArray("distances"));
-				
+
 		// Open database connnection
 		SQLiteDatabase db = this.getWritableDatabase();
+		
 		// Define values for each field
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
@@ -186,42 +173,54 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		Log.d("MySqliteHlper addActivitiesRow",String.valueOf(rowId));
 		db.close();
 	}
-	
-	private int computeMiutesAwake(JSONArray arr) throws JSONException {
-		int total=0;
+
+	private float computeMiutesAwake(JSONArray arr) throws JSONException {
+		float total=0;
 
 		for(int i=0;i<arr.length();i++){
 			JSONObject eachObj = arr.getJSONObject(i);
-			int eachMinutesAwake =Integer.parseInt(eachObj.getString("minutesAwake"));
+			float eachMinutesAwake =Float.parseFloat(eachObj.getString("minutesAwake"));
 			total += eachMinutesAwake;    		
 		}
 		return total;
 	}
 
-	private int computeRestlessMinutes(JSONArray arr) throws JSONException {
+	private float computeRestlessMinutes(JSONArray arr) throws JSONException {
 		int total=0;
 
 		for(int i=0;i<arr.length();i++){
 			JSONObject eachObj = arr.getJSONObject(i);
-			int eachRestlessDuration =Integer.parseInt(eachObj.getString("restlessDuration"));
+			float eachRestlessDuration =Float.parseFloat(eachObj.getString("restlessDuration"));
 			total += eachRestlessDuration;    		
 		}
 		return total;
 	}
-	
+
 	private float computeDistance(JSONArray arr) throws JSONException {
 		float total=0f;
 
 		for(int i=0;i<arr.length();i++){
 			JSONObject eachObj = arr.getJSONObject(i);
 			String eachDistance = eachObj.getString("activity");
-			
+
 			if (eachDistance.equals("total")) {
-				
+
 				total = Float.parseFloat(eachObj.getString("distance"));
 				System.out.println("computeDistance="+String.valueOf(total));
 			}
 		}
 		return total;
+	}
+
+	public double selectQuery (String queryString) {
+
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = getReadableDatabase().rawQuery(queryString, null);
+		cursor.moveToFirst();			
+		double value = cursor.getFloat(1);
+		
+		cursor.close();
+		return value;
 	}
 }
