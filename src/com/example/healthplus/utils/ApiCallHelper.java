@@ -1,19 +1,17 @@
 package com.example.healthplus.utils;
 
+import io.oauth.OAuthData;
+import io.oauth.OAuthRequest;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.eazegraph.lib.charts.PieChart;
-import org.eazegraph.lib.models.PieModel;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.oauth.OAuthData;
-import io.oauth.OAuthRequest;
-
+import android.util.Log;
 
 import com.example.healthplus.database.MySQLiteHelper;
 import com.example.healthplus.oauth.SerializableOauthData;
@@ -56,6 +54,7 @@ public class ApiCallHelper {
 	}
 
 	public void setWaterModel(String waterModel) {
+		Log.d("ApiCallHelper","setWaterModel");
 		this.waterJson = waterModel;
 		try {
 			sqlHelper.addWaterItem(waterJson);
@@ -67,6 +66,7 @@ public class ApiCallHelper {
 	}
 
 	public void getUserWaterData(){
+		Log.d("ApiCallHelper","getUserWaterData");
 		data = SerializableOauthData.getOauthData();
 		data.http("/1/user/-/foods/log/water/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
 			private URL url;

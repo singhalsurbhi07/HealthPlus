@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.healthplus.oauth.SerializableOauthData;
+import com.example.healthplus.utils.ApiCallHelper;
 import com.example.healthplus.utils.Units;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -19,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -301,4 +303,11 @@ public class UserActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void onSyncAction(MenuItem mi) {
+	     // handle click here
+		Log.d("UserActivity","OnSyncAction");
+		ApiCallHelper helper = new ApiCallHelper();
+		helper.getUserWaterData();
+	  }
 }

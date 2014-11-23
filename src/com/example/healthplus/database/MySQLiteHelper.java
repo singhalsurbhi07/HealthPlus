@@ -68,7 +68,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL(TABLE_FOOD_CREATE);
 		db.execSQL(TABLE_SLEEP_CREATE);
 		db.execSQL(TABLE_ACTIVITIES_CREATE);
-		db.execSQL(TABLE_INSERT);
+		//db.execSQL(TABLE_INSERT);
 
 	}
 
@@ -98,6 +98,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	 
 	   // Insert record into the database
     public void addWaterItem(String waterStr) throws JSONException {
+    	Log.d("MysqliteHelper","addwaterItem");
     	
 		
 		JSONObject waterJSON = new JSONObject(waterStr);		
@@ -109,7 +110,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
         values.put(COLUMN_AMOUNT, Float.parseFloat(amount)); 
         // Insert Row
-        db.insert(TABLE_NAME, null, values);
+        long rowId=db.insert(TABLE_NAME, null, values);
+        Log.d("MySqliteHlper addWaterItem",String.valueOf(rowId));
         db.close(); // Closing database connection
     }
 
