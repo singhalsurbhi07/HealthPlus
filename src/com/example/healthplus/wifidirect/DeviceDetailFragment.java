@@ -115,7 +115,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 						Log.d(WiFiDirectActivity.TAG, "Reached here Richa1");
 						intent.setType("image/*");
-						//intent.setType("/");
+						//intent.setType("text/plain");
 						startActivityForResult(intent, CHOOSE_FILE_RESULT_CODE);
 						Log.d(WiFiDirectActivity.TAG, "Reached here Richa2");
 					}
@@ -129,9 +129,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
 		String localIP = Utils.getLocalIPAddress();
 		// Trick to find the ip in the file /proc/net/arp
-		String client_mac_fixed = new String(device.deviceAddress).replace("99", "19");
+		String client_mac_fixed = new String(device.deviceAddress).replace("3a", "38");
+		Log.d(WiFiDirectActivity.TAG, "Client MAC fixed Richa: " + client_mac_fixed);
 		String clientIP = Utils.getIPFromMac(client_mac_fixed);
 		Log.d(WiFiDirectActivity.TAG, "Local IP Address Richa: " + localIP);
+		Log.d(WiFiDirectActivity.TAG, "Client IP Address Richa: " + clientIP);
 		// User has picked an image. Transfer it to group owner i.e peer using
 		// FileTransferService.
 		Uri uri = data.getData();
@@ -152,7 +154,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 			Log.d(WiFiDirectActivity.TAG, "Reached here client IP1:" + clientIP);
 			serviceIntent.putExtra(FileTransferService.EXTRAS_ADDRESS, clientIP);
 			Log.d(WiFiDirectActivity.TAG, "Reached here client IP2:" + clientIP);
-		}else{
+		}else{ 
 			Log.d(WiFiDirectActivity.TAG, "Reached here  IP server1:" + IP_SERVER);
 			serviceIntent.putExtra(FileTransferService.EXTRAS_ADDRESS, IP_SERVER);
 			Log.d(WiFiDirectActivity.TAG, "Reached here Extra address2:" + IP_SERVER);

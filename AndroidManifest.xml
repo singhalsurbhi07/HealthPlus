@@ -73,7 +73,7 @@
             >
            
         </activity>
-        <service android:enabled="true" android:name=".FileTransferService" />
+        <service android:enabled="true" android:name="com.example.healthplus.wifidirect.FileTransferService" />
     </application>
 
 </manifest>

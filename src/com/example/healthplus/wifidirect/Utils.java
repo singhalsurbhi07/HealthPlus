@@ -15,6 +15,7 @@ public class Utils {
 
 	//private final static String p2pInt = "p2p-p2p0";
 	private final static String p2pInt = "p2p-wlan0-0";
+	private final static String p2pCInt = "wlan0";
 
 	public static String getIPFromMac(String MAC) {
 		/*
@@ -33,12 +34,20 @@ public class Utils {
 				if (splitted != null && splitted.length >= 4) {
 					// Basic sanity check
 					String device = splitted[5];
-					if (device.matches(".*" +p2pInt+ ".*")){
+					Log.d(WiFiDirectActivity.TAG, "device value Richa : " + device);
+					if (device.matches(".*" +p2pCInt+ ".*")){
+						Log.d(WiFiDirectActivity.TAG, "mac matches MAC ");
 						String mac = splitted[3];
+						Log.d(WiFiDirectActivity.TAG, "");
+						Log.d(WiFiDirectActivity.TAG, "string mac : " + mac);
+						Log.d(WiFiDirectActivity.TAG, "string MAC : " + MAC);
 						if (mac.matches(MAC)) {
+							Log.d(WiFiDirectActivity.TAG, "mac  matches MAC ");
+							Log.d(WiFiDirectActivity.TAG, "Splitted[0] value Richa :" + splitted[0]);
 							return splitted[0];
 						}
 					}
+					
 				}
 				Log.d(WiFiDirectActivity.TAG, "MAC line Richa: " + line);
 			}
