@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -87,5 +88,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		DateFormat.getDateInstance();
 		return sdf.format(date);
 	}
+
 
 }
