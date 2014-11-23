@@ -25,14 +25,14 @@ public class QueryData {
 		
 	}
 	
-	public static String formQuery(String functionType, String tableType, String startDate, String endDate){
-		StringBuilder query = new StringBuilder();
-		query.append("Select");
-		if(functionType.equals(functions[0])){
-			query.append("Sum(");
-		}else if(functionType.equals(functions[1])){
-			query.append("Average(");
-		}
-		//query.append("from "+tableMap.get(tableType)+" where startDate ")
-	}
+//	public static String formQuery(String functionType, String tableType, String startDate, String endDate){
+//		StringBuilder query = new StringBuilder();
+//		query.append("Select");
+//		if(functionType.equals(functions[0])){
+//			query.append("Sum(");
+//		}else if(functionType.equals(functions[1])){
+//			query.append("Average(");
+//		}
+//		//query.append("from "+tableMap.get(tableType)+" where startDate ")
+//	}
 }

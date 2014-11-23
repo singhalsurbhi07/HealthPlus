@@ -11,6 +11,7 @@ import org.json.*;
 
 import io.oauth.OAuth;
 
+import com.example.healthplus.database.MySQLiteHelper;
 import com.example.healthplus.oauth.SerializableOauthData;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -44,6 +45,8 @@ public class MainActivity extends Activity implements OAuthCallback{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		MySQLiteHelper sqlHelper = new MySQLiteHelper(this);
+		SerializableOauthData.setSqlHelper(sqlHelper);
 		OAuthData data = SerializableOauthData.getOauthData();
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
         		cacheInMemory().cacheOnDisc().build();

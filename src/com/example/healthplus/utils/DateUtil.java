@@ -12,4 +12,11 @@ public class DateUtil {
 		return dateFormat.format(cal.getTime()).toString();
 		
 	}
+	
+	public static  String getYesterdayDateString() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);    
+        return dateFormat.format(cal.getTime());
+}
 }
