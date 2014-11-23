@@ -147,6 +147,6 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 	}
 	
 	private void formQuery(){
-		
+		QueryData.formQuery(functionVal, dataVal, startDateVal, endDateVal);
 	}
 }
