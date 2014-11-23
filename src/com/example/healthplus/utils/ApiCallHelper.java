@@ -27,7 +27,15 @@ public class ApiCallHelper {
 	}
 
 	public void setSleepJson(String sleepJson) {
+		Log.d("ApiCallHelper", "setSleepMOdel" );
+		
 		this.sleepJson = sleepJson;
+		try {
+			sqlHelper.addSleepRow(sleepJson);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String getFoodJson() {
@@ -35,7 +43,15 @@ public class ApiCallHelper {
 	}
 
 	public void setFoodJson(String foodJson) {
+		
 		this.foodJson = foodJson;
+		
+		try {
+			sqlHelper.addFoodRow(foodJson);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String getActivitiesJson() {
@@ -44,6 +60,13 @@ public class ApiCallHelper {
 
 	public void setActivitiesJson(String activitiesJson) {
 		this.activitiesJson = activitiesJson;
+		
+		try {
+			sqlHelper.addActivitiesRow(activitiesJson);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	String foodJson;
@@ -57,7 +80,7 @@ public class ApiCallHelper {
 		Log.d("ApiCallHelper","setWaterModel");
 		this.waterJson = waterModel;
 		try {
-			sqlHelper.addWaterItem(waterJson);
+			sqlHelper.addWaterRow(waterJson);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -119,8 +142,8 @@ public class ApiCallHelper {
 	
 	public void getUserSleepData(){
 		data = SerializableOauthData.getOauthData();
-		//data.http("/1/user/-/sleep/date/"+DateUtil.getTodaysDate()+".json", new OAuthRequest() {
-		data.http("/1/user/-/sleep/date/2014-11-13.json", new OAuthRequest() {
+		data.http("/1/user/-/sleep/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
+//		data.http("/1/user/-/sleep/date/2014-11-13.json", new OAuthRequest() {
 			private URL url;
 			private URLConnection con;
 			@Override
@@ -155,11 +178,6 @@ public class ApiCallHelper {
 					//sleepObj = new SleepModel(result);
 					setSleepJson(total.toString());
 					
-					
-					
-					
-					
-					
 				} catch (Exception e) { e.printStackTrace(); }
 			}
 
@@ -173,7 +191,7 @@ public class ApiCallHelper {
 	
 	public void getUserFoodData(){
 		data = SerializableOauthData.getOauthData();
-		data.http("/1/user/-/foods/log/date/"+DateUtil.getTodaysDate()+".json", new OAuthRequest() {
+		data.http("/1/user/-/foods/log/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
 			private URL url;
 			private URLConnection con;
 			@Override
@@ -206,11 +224,6 @@ public class ApiCallHelper {
 					System.out.println(total.toString());
 					JSONObject result = new JSONObject(total.toString());
 					setFoodJson(total.toString());
-					
-					
-					
-					
-					
 				} catch (Exception e) { e.printStackTrace(); }
 			}
 
@@ -224,7 +237,7 @@ public class ApiCallHelper {
 	
 	public void getUserActivitiesData(){
 		data = SerializableOauthData.getOauthData();
-		data.http("/1/user/-/activities/date/"+DateUtil.getTodaysDate()+".json", new OAuthRequest() {
+		data.http("/1/user/-/activities/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
 			private URL url;
 			private URLConnection con;
 			@Override
@@ -254,7 +267,7 @@ public class ApiCallHelper {
 						total.append(line);
 					}
 					System.out.println(total.toString());
-					setActivitiesJson(toString());
+					setActivitiesJson(total.toString());
 					
 					
 					
