@@ -36,8 +36,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.healthplus.R;
+//import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 import com.example.healthplus.wifidirect.DeviceListFragment.DeviceActionListener;
+import com.example.healthplus.R;
 
 /**
  * An activity that uses WiFi Direct APIs to discover and connect with available
