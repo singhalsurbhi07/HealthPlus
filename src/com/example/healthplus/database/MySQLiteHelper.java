@@ -1,14 +1,19 @@
 package com.example.healthplus.database;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.example.healthplus.utils.ApiCallHelper;
+import com.example.healthplus.utils.DateUtil;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
@@ -18,6 +23,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	public static String COLUMN_ID = "DATE";
 	public static final String COLUMN_AMOUNT = "AMOUNT";
 	//public static final String column_date = dateToSqliteDateString(Calendar.DATE); 
+	//public ApiCallHelper call = new ApiCallHelper();
 
 
 	private static final int amount = 0;
@@ -85,9 +91,26 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		// The format is the same as CURRENT_TIMESTAMP: "YYYY-MM-DD"
 		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		DateFormat.getDateInstance();
+		
 		return sdf.format(date);
 	}
 
+	 
+	   // Insert record into the database
+    public void addWaterItem(String waterStr) throws JSONException {
+    	
+		
+		JSONObject waterJSON = new JSONObject(waterStr);		
+		String amount = new JSONObject(waterJSON.getString("summary")).getString("water");
+    	// Open database connection
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Define values for each field
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
+        values.put(COLUMN_AMOUNT, Float.parseFloat(amount)); 
+        // Insert Row
+        db.insert(TABLE_NAME, null, values);
+        db.close(); // Closing database connection
+    }
 
 }

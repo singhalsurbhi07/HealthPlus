@@ -8,12 +8,14 @@ import java.net.URLConnection;
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.oauth.OAuthData;
 import io.oauth.OAuthRequest;
 
 
+import com.example.healthplus.database.MySQLiteHelper;
 import com.example.healthplus.oauth.SerializableOauthData;
 
 public class ApiCallHelper {
@@ -21,6 +23,7 @@ public class ApiCallHelper {
 	OAuthData data = SerializableOauthData.getOauthData();
 	String waterJson;
 	String sleepJson;
+	MySQLiteHelper sqlHelper = SerializableOauthData.getSqlHelper();
 	public String getSleepJson() {
 		return sleepJson;
 	}
@@ -54,6 +57,13 @@ public class ApiCallHelper {
 
 	public void setWaterModel(String waterModel) {
 		this.waterJson = waterModel;
+		try {
+			sqlHelper.addWaterItem(waterJson);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void getUserWaterData(){
