@@ -29,6 +29,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.Uri.Builder;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -112,20 +113,22 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 					public void onClick(View v) {
 						// Allow user to pick an image from Gallery or other
 						// registered apps
-						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-						Log.d(WiFiDirectActivity.TAG, "Reached here Richa1");
-						intent.setType("image/*");
+						//Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+						//Log.d(WiFiDirectActivity.TAG, "Reached here Richa1");
+						//intent.setType("image/*");
 						//intent.setType("text/plain");
-						startActivityForResult(intent, CHOOSE_FILE_RESULT_CODE);
-						Log.d(WiFiDirectActivity.TAG, "Reached here Richa2");
+						//startActivityForResult(intent, CHOOSE_FILE_RESULT_CODE);
+						//Log.d(WiFiDirectActivity.TAG, "Reached here Richa2");
+						sendFile();
+						
 					}
 				});
 
 		return mContentView;
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	
+	public void sendFile() {
 
 		String localIP = Utils.getLocalIPAddress();
 		// Trick to find the ip in the file /proc/net/arp
@@ -136,16 +139,20 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		Log.d(WiFiDirectActivity.TAG, "Client IP Address Richa: " + clientIP);
 		// User has picked an image. Transfer it to group owner i.e peer using
 		// FileTransferService.
-		Uri uri = data.getData();
-		Log.d(WiFiDirectActivity.TAG, "URI richa: " + uri);
+		File root = android.os.Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+		String path = root.getAbsolutePath()+"/healthplus/"+"request.txt";
+		//Uri uri = new Uri.Builder().appendPath(path);
+	
+		//Log.d(WiFiDirectActivity.TAG, "URI richa: " + uri);
 		TextView statusText = (TextView) mContentView.findViewById(R.id.status_text);
-		statusText.setText("Sending: " + uri);
-		Log.d(WiFiDirectActivity.TAG, "Intent----------- " + uri);
+		statusText.setText("Sending: " + path);
+		//Log.d(WiFiDirectActivity.TAG, "Intent----------- " + uri);
 		Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
 		Log.d(WiFiDirectActivity.TAG, "Reached here Richa before send");
 		serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
-		Log.d(WiFiDirectActivity.TAG, "Reached here Richa after send");
-		serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
+		//Log.d(WiFiDirectActivity.TAG, "Reached here Richa after send");
+		Log.d(WiFiDirectActivity.TAG, "Path : " + path);
+		serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, path);
 		Log.d(WiFiDirectActivity.TAG, "Reached here Richa: put extra string to URI");
 		Log.d(WiFiDirectActivity.TAG, "Reached here Richa after send");
 		Log.d(WiFiDirectActivity.TAG, "Reached here Richa IP server =" + IP_SERVER);

@@ -37,7 +37,7 @@ public class OptionsActivity extends Activity {
 		}else if(receivedOption.equals("Food")){
 			ft.replace(R.id.fragment_placeholder, new FoodFragment());
 		}else if(receivedOption.equals("Customise")){
-			Intent i = new Intent(this,DataSharingSteps.class);
+			Intent i = new Intent(this,UserQuery.class);
 			startActivity(i);
 		}
 		// or ft.add(R.id.your_placeholder, new FooFragment());

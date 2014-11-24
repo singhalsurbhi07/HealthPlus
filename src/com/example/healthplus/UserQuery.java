@@ -6,6 +6,7 @@ import java.util.Calendar;
 import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -19,6 +20,8 @@ import com.example.healthplus.datamodels.QueryData;
 import com.example.healthplus.fragments.AlertDialogRadio;
 import com.example.healthplus.fragments.AlertDialogRadio.AlertPositiveListener;
 import com.example.healthplus.fragments.DatePickerFragment;
+import com.example.healthplus.utils.ExternalStorageUtil;
+import com.example.healthplus.wifidirect.WiFiDirectActivity;
 
 
 public class UserQuery extends FragmentActivity implements AlertPositiveListener{
@@ -79,8 +82,7 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 				}else{
 					showDatePickerDialog();
 				}
-				int res = checkValidity();
-            	checkAllValuesSet(res);
+				
 			}
 			//
 		});
@@ -106,12 +108,12 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
                 this, new DatePickerFragment.DateDialogFragmentListener() {
             public void updateChangedDate(int year, int month, int day) {
             	if(selected_button==2){
-               startDateVal = (String.valueOf(day) + "-" + String.valueOf(month+1) + "-" +  String.valueOf(year));                               
+               startDateVal = (String.valueOf(year) + "-" + String.valueOf(month+1) + "-" +  String.valueOf(day));                               
                 now.set(year, month, day);
               //pet.setBirthdate(birthdate.getText().toString());
                 Log.d("UserQuery show DatePicker",startDateVal);
             	}else if(selected_button==3){
-            		endDateVal = (String.valueOf(day) + "-" + String.valueOf(month+1) + "-" +  String.valueOf(year));                               
+            		endDateVal = (String.valueOf(year) + "-" + String.valueOf(month+1) + "-" +  String.valueOf(day));                               
                     now.set(year, month, day);
                     
             	}
@@ -133,20 +135,30 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 		return -1;
 	}
 	
-	private void checkAllValuesSet(int value){
-		if(value<0){
+	
+	
+	private void formQuery(){
+		String query = QueryData.formQuery(functionVal, dataVal, startDateVal, endDateVal);
+		ExternalStorageUtil.writeToSDFile(query);
+	}
+	
+	public void onStartSharingClicked(View v){
+		int res = checkValidity();
+		if(res<0){
 			formQuery();
+			Intent i = new Intent(this,WiFiDirectActivity.class);
+			startActivity(i);
+			
 		}else{
 			Context context = getApplicationContext();
-			CharSequence text = values[value];
+			CharSequence text = values[res];
 			int duration = Toast.LENGTH_SHORT;
 
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 		}
-	}
-	
-	private void formQuery(){
-		QueryData.formQuery(functionVal, dataVal, startDateVal, endDateVal);
+		Log.d("User Query click res Value",String.valueOf(res));
+    	
+		
 	}
 }

@@ -23,7 +23,7 @@ import android.util.Log;
 public class FileTransferService extends IntentService {
 
 	private static final int SOCKET_TIMEOUT = 5000;
-	public static final String ACTION_SEND_FILE = "com.example.android.wifidirect.SEND_FILE";
+	public static final String ACTION_SEND_FILE = "com.example.healthplus.wifidirect.SEND_FILE";
 	public static final String EXTRAS_FILE_PATH = "file_url";
 	public static final String EXTRAS_ADDRESS = "go_host";
 	public static final String EXTRAS_PORT = "go_port";
@@ -44,6 +44,7 @@ public class FileTransferService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 
 		Context context = getApplicationContext();
+		Log.d("FileTransfer on HandleIntebt",intent.getAction());
 		if (intent.getAction().equals(ACTION_SEND_FILE)) {
 			String fileUri = intent.getExtras().getString(EXTRAS_FILE_PATH);
 			String host = intent.getExtras().getString(EXTRAS_ADDRESS);

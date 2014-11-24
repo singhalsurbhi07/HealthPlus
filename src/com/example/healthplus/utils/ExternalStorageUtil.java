@@ -1,22 +1,17 @@
 package com.example.healthplus.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import android.app.Activity;
 import android.os.Environment;
 import android.util.Log;
 
-import com.example.healthplus.R;
-
 public class ExternalStorageUtil extends Activity  {
-	public boolean isExternalStorageWritable() {
+	public static boolean isExternalStorageWritable() {
 	    String state = Environment.getExternalStorageState();
 	    if (Environment.MEDIA_MOUNTED.equals(state)) {
 	        return true;
@@ -25,7 +20,7 @@ public class ExternalStorageUtil extends Activity  {
 	}
 
 	/* Checks if external storage is available to at least read */
-	public boolean isExternalStorageReadable() {
+	public static boolean isExternalStorageReadable() {
 	    String state = Environment.getExternalStorageState();
 	    if (Environment.MEDIA_MOUNTED.equals(state) ||
 	        Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
@@ -33,25 +28,39 @@ public class ExternalStorageUtil extends Activity  {
 	    }
 	    return false;
 	}
-	private void writeToSDFile(String query){
+	public static void writeToSDFile(String query){
+		
+		if(isExternalStorageWritable()){
 
 	    // Find the root of the external storage.
 	    // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
 
-	    File root = android.os.Environment.getExternalStorageDirectory(); 
+	    //File root = android.os.Environment.getExternalStoragePublicDirectory(Environment.getExternalStorageDirectory(),"healthplus"); 
+			File file = new File(Environment.getExternalStoragePublicDirectory(
+		            Environment.DIRECTORY_DOWNLOADS), "healthplus");
+			if (!file.mkdirs()) {
+		        Log.d("External Storage dir ", "Directory not created");
+		    }
+			Log.d("Externalstorage root=",file.getAbsolutePath());
 	    //tv.append("\nExternal file system root: "+root);
 
 	    // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
 
-	    File dir = new File (root.getAbsolutePath() + "/healthplus");
-	    dir.mkdirs();
-	    File file = new File(dir, "request.txt");
+	    //File dir = new File (root.getAbsolutePath()+ "/healthplus");
+	    //String secStore = System.getenv("SECONDARY_STORAGE");
+	    //File f_secs = new File(secStore);
+	    //File dir = new File(secStore+"/healthplus");
+	    //dir.mkdirs();
+	    File dir = new File("/storage/extSdCard/healthplus");
+	    Log.d("ExternalStorage writeFile",dir.getAbsolutePath());
+	    File reqfile = new File(file, "request.txt");
+	    Log.d("ExternalStorage writeFile",file.getAbsolutePath());
 
 	    try {
-	        FileOutputStream f = new FileOutputStream(file);
+	        FileOutputStream f = new FileOutputStream(reqfile);
 	        PrintWriter pw = new PrintWriter(f);
-	        pw.println(query);
-	        //pw.println("Hello");
+	        //pw.println(query);
+	        pw.println("Hello");
 	        pw.flush();
 	        pw.close();
 	        f.close();
@@ -62,6 +71,9 @@ public class ExternalStorageUtil extends Activity  {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }   
+		}else{
+			Log.d("ExternalStorage writeFile","SD card not writable");
+		}
 	    //tv.append("\n\nFile written to "+file);
 	}
 
