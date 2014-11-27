@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.os.Environment;
 import android.util.Log;
@@ -35,7 +38,15 @@ public class ExternalStorageUtil extends Activity  {
 	    // Find the root of the external storage.
 	    // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
 
-	    //File root = android.os.Environment.getExternalStoragePublicDirectory(Environment.getExternalStorageDirectory(),"healthplus"); 
+	    //File root = android.os.Environment.getExternalStoragePublicDirectory(Environment.getExternalStorageDirectory(),"healthplus");
+			JSONObject obj = new JSONObject();
+			//obj.put("deviceName", );
+			try {
+				obj.put("query", query);
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			File file = new File(Environment.getExternalStoragePublicDirectory(
 		            Environment.DIRECTORY_DOWNLOADS), "healthplus");
 			if (!file.mkdirs()) {
@@ -54,13 +65,14 @@ public class ExternalStorageUtil extends Activity  {
 	    File dir = new File("/storage/extSdCard/healthplus");
 	    Log.d("ExternalStorage writeFile",dir.getAbsolutePath());
 	    File reqfile = new File(file, "request.txt");
+	    Log.d("ExternalStorage writeFile requestFileName",reqfile.getAbsolutePath());
 	    Log.d("ExternalStorage writeFile",file.getAbsolutePath());
 
 	    try {
 	        FileOutputStream f = new FileOutputStream(reqfile);
 	        PrintWriter pw = new PrintWriter(f);
 	        //pw.println(query);
-	        pw.println("Hello");
+	        pw.write(obj.toString());
 	        pw.flush();
 	        pw.close();
 	        f.close();

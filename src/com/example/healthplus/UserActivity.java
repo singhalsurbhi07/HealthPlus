@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.example.healthplus.oauth.SerializableOauthData;
 import com.example.healthplus.utils.ApiCallHelper;
 import com.example.healthplus.utils.Units;
+import com.example.healthplus.wifidirect.WiFiDirectActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
@@ -313,4 +314,10 @@ public class UserActivity extends Activity {
 		helper.getUserFoodData();
 		helper.getUserActivitiesData();
 	  }
+	
+	public void onWiFiConnect(MenuItem mi){
+		Intent i = new Intent(this,WiFiDirectActivity.class);
+		startActivity(i);
+	}
 }
+
