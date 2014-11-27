@@ -16,20 +16,23 @@
 
 package com.example.healthplus.wifidirect;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.json.JSONObject;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.Uri.Builder;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -46,6 +49,8 @@ import android.widget.TextView;
 
 import com.example.healthplus.R;
 import com.example.healthplus.wifidirect.DeviceListFragment.DeviceActionListener;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * A fragment that manages a particular peer and allows interaction with device
@@ -151,7 +156,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		Log.d(WiFiDirectActivity.TAG, "Reached here Richa before send");
 		serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
 		//Log.d(WiFiDirectActivity.TAG, "Reached here Richa after send");
-		Log.d(WiFiDirectActivity.TAG, "Path : " + path);
+		//Log.d(WiFiDirectActivity.TAG, "Path : " + path);
 		serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, path);
 		Log.d(WiFiDirectActivity.TAG, "Reached here Richa: put extra string to URI");
 		Log.d(WiFiDirectActivity.TAG, "Reached here Richa after send");
@@ -261,8 +266,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				Socket client = serverSocket.accept();
 				Log.d(WiFiDirectActivity.TAG, "Server: connection done");
 				final File f = new File(Environment.getExternalStorageDirectory() + "/"
-						+ context.getPackageName() + "/wifip2pshared-" + System.currentTimeMillis()
-						+ ".jpg");
+						+ context.getPackageName() + "/healthplus-" + System.currentTimeMillis()
+						+ ".txt");
 
 				File dirs = new File(f.getParent());
 				if (!dirs.exists())
@@ -271,6 +276,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
 				Log.d(WiFiDirectActivity.TAG, "server: copying files " + f.toString());
 				InputStream inputstream = client.getInputStream();
+				
 				copyFile(inputstream, new FileOutputStream(f));
 				serverSocket.close();
 				server_running = false;
@@ -291,7 +297,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				statusText.setText("File copied - " + result);
 				Intent intent = new Intent();
 				intent.setAction(android.content.Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.parse("file://" + result), "image/*");
+				intent.setDataAndType(Uri.parse("file://" + result), "*/*");
 				context.startActivity(intent);
 			}
 
@@ -313,6 +319,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		int len;
 		try {
 			while ((len = inputStream.read(buf)) != -1) {
+				//System.out.println("len =inputStream"+);
 				out.write(buf, 0, len);
 
 			}
