@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.healthplus.utils.DateUtil;
+import com.example.healthplus.utils.LoadData;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
@@ -61,6 +62,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL(TABLE_FOOD_CREATE);
 		db.execSQL(TABLE_SLEEP_CREATE);
 		db.execSQL(TABLE_ACTIVITIES_CREATE);
+		
+		LoadData insertData = new LoadData();
+		insertData.loadTenDaysData();
 	}
 
 	@Override

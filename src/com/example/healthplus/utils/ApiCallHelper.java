@@ -17,10 +17,14 @@ import com.example.healthplus.database.MySQLiteHelper;
 import com.example.healthplus.oauth.SerializableOauthData;
 
 public class ApiCallHelper {
-	
+
 	OAuthData data = SerializableOauthData.getOauthData();
 	String waterJson;
 	String sleepJson;
+
+	String foodJson;
+	String activitiesJson;
+
 	MySQLiteHelper sqlHelper = SerializableOauthData.getSqlHelper();
 	public String getSleepJson() {
 		return sleepJson;
@@ -28,7 +32,7 @@ public class ApiCallHelper {
 
 	public void setSleepJson(String sleepJson) {
 		Log.d("ApiCallHelper", "setSleepMOdel" );
-		
+
 		this.sleepJson = sleepJson;
 		try {
 			sqlHelper.addSleepRow(sleepJson);
@@ -43,9 +47,9 @@ public class ApiCallHelper {
 	}
 
 	public void setFoodJson(String foodJson) {
-		
+
 		this.foodJson = foodJson;
-		
+
 		try {
 			sqlHelper.addFoodRow(foodJson);
 		} catch (JSONException e) {
@@ -60,7 +64,7 @@ public class ApiCallHelper {
 
 	public void setActivitiesJson(String activitiesJson) {
 		this.activitiesJson = activitiesJson;
-		
+
 		try {
 			sqlHelper.addActivitiesRow(activitiesJson);
 		} catch (JSONException e) {
@@ -69,9 +73,7 @@ public class ApiCallHelper {
 		}
 	}
 
-	String foodJson;
-	String activitiesJson;;
-	
+
 	public String getWaterModel() {
 		return waterJson;
 	}
@@ -85,13 +87,19 @@ public class ApiCallHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	public void getUserWaterData(){
+	public void getUserWaterData(String dateStr){
+
 		Log.d("ApiCallHelper","getUserWaterData");
+
+		if (dateStr == null) {
+
+			dateStr = DateUtil.getYesterdayDateString();
+		}
 		data = SerializableOauthData.getOauthData();
-		data.http("/1/user/-/foods/log/water/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
+		data.http("/1/user/-/foods/log/water/date/"+ dateStr +".json", new OAuthRequest() {
 			private URL url;
 			private URLConnection con;
 			@Override
@@ -113,7 +121,7 @@ public class ApiCallHelper {
 			@Override
 			public void onReady() {
 				// This method is called once url and headers are set.
-				
+
 				try {
 					BufferedReader r = new BufferedReader(new InputStreamReader(con.getInputStream()));
 					StringBuilder total = new StringBuilder();
@@ -125,10 +133,6 @@ public class ApiCallHelper {
 					setWaterModel(total.toString());
 					//JSONObject result = new JSONObject(total.toString());
 					//waterComsumpt  = new WaterConsumeModel(result);
-					
-					
-					
-					
 				} catch (Exception e) { e.printStackTrace(); }
 			}
 
@@ -139,11 +143,16 @@ public class ApiCallHelper {
 			}
 		});
 	}
-	
-	public void getUserSleepData(){
+
+	public void getUserSleepData(String dateStr){
+
+		if (dateStr == null) {
+			dateStr = DateUtil.getYesterdayDateString();
+		}
+
 		data = SerializableOauthData.getOauthData();
-		data.http("/1/user/-/sleep/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
-//		data.http("/1/user/-/sleep/date/2014-11-13.json", new OAuthRequest() {
+		data.http("/1/user/-/sleep/date/" + dateStr +".json", new OAuthRequest() {
+			//		data.http("/1/user/-/sleep/dates/2014-11-13.json", new OAuthRequest() {
 			private URL url;
 			private URLConnection con;
 			@Override
@@ -165,7 +174,7 @@ public class ApiCallHelper {
 			@Override
 			public void onReady() {
 				// This method is called once url and headers are set.
-				
+
 				try {
 					BufferedReader r = new BufferedReader(new InputStreamReader(con.getInputStream()));
 					StringBuilder total = new StringBuilder();
@@ -177,7 +186,7 @@ public class ApiCallHelper {
 					JSONObject result = new JSONObject(total.toString());
 					//sleepObj = new SleepModel(result);
 					setSleepJson(total.toString());
-					
+
 				} catch (Exception e) { e.printStackTrace(); }
 			}
 
@@ -188,7 +197,7 @@ public class ApiCallHelper {
 			}
 		});
 	}
-	
+
 	public void getUserFoodData(){
 		data = SerializableOauthData.getOauthData();
 		data.http("/1/user/-/foods/log/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
@@ -213,7 +222,7 @@ public class ApiCallHelper {
 			@Override
 			public void onReady() {
 				// This method is called once url and headers are set.
-				
+
 				try {
 					BufferedReader r = new BufferedReader(new InputStreamReader(con.getInputStream()));
 					StringBuilder total = new StringBuilder();
@@ -234,7 +243,7 @@ public class ApiCallHelper {
 			}
 		});
 	}
-	
+
 	public void getUserActivitiesData(){
 		data = SerializableOauthData.getOauthData();
 		data.http("/1/user/-/activities/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
@@ -268,11 +277,7 @@ public class ApiCallHelper {
 					}
 					System.out.println(total.toString());
 					setActivitiesJson(total.toString());
-					
-					
-					
-					//JSONObject user = new JSONObject(result.getString("user").toString());
-					
+
 				} catch (Exception e) { e.printStackTrace(); }
 			}
 
@@ -283,5 +288,4 @@ public class ApiCallHelper {
 			}
 		});
 	}
-
 }
