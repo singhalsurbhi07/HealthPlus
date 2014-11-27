@@ -309,8 +309,8 @@ public class UserActivity extends Activity {
 	     // handle click here
 		Log.d("UserActivity","OnSyncAction");
 		ApiCallHelper helper = new ApiCallHelper();
-		helper.getUserWaterData();
-		helper.getUserSleepData();
+		helper.getUserWaterData(null);
+		helper.getUserSleepData(null);
 		helper.getUserFoodData();
 		helper.getUserActivitiesData();
 	  }

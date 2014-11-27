@@ -4,7 +4,7 @@ public class EachSleepModel{
 	String time;
 	String val;
 	String efficiency;
-	
+
 	public EachSleepModel(String time, String val,String efficiency){
 		this.time = time;
 		this.val = val;
