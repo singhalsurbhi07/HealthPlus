@@ -61,7 +61,7 @@ public class FileTransferService extends IntentService {
 				ContentResolver cr = context.getContentResolver();
 				InputStream is = null;
 				try {
-					is = cr.openInputStream(Uri.parse(fileUri));
+					is = cr.openInputStream(Uri.parse("file://"+fileUri));
 				} catch (FileNotFoundException e) {
 					Log.d(WiFiDirectActivity.TAG, e.toString());
 				}
