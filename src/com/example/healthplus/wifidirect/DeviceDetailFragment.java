@@ -16,17 +16,13 @@
 
 package com.example.healthplus.wifidirect;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -49,8 +45,6 @@ import android.widget.TextView;
 
 import com.example.healthplus.R;
 import com.example.healthplus.wifidirect.DeviceListFragment.DeviceActionListener;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * A fragment that manages a particular peer and allows interaction with device
