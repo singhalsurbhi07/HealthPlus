@@ -1,5 +1,6 @@
 package com.example.healthplus.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,12 +14,17 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 
 import com.example.healthplus.database.MySQLiteHelper;
+import com.example.healthplus.oauth.SerializableOauthData;
 
 public class ExternalStorageUtil extends Activity  {
+
+	MySQLiteHelper sqlHelper = SerializableOauthData.getSqlHelper();
+	
 	public static boolean isExternalStorageWritable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -67,9 +73,9 @@ public class ExternalStorageUtil extends Activity  {
 			//File f_secs = new File(secStore);
 			//File dir = new File(secStore+"/healthplus");
 			//dir.mkdirs();
-			File dir = new File("/storage/extSdCard/healthplus");
-			Log.d("ExternalStorage writeFile",dir.getAbsolutePath());
-			File reqfile = new File(file, "request.txt");
+			//File dir = new File("/storage/extSdCard/healthplus");
+			//Log.d("ExternalStorage writeFile",dir.getAbsolutePath());
+			File reqfile = new File(file, "request.json");
 			Log.d("ExternalStorage writeFile requestFileName",reqfile.getAbsolutePath());
 			Log.d("ExternalStorage writeFile",file.getAbsolutePath());
 
@@ -103,7 +109,8 @@ public class ExternalStorageUtil extends Activity  {
 
 			JSONObject obj = new JSONObject();
 			try {
-				obj.put("result", readFile());
+				String response = null;//readFile();
+				obj.put("result", response);
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}
@@ -139,67 +146,38 @@ public class ExternalStorageUtil extends Activity  {
 	}
 
 
-	public String readFile(){
+	public String readFile(String path) throws IOException, JSONException{
 
 		if(isExternalStorageReadable()) {
-			JSONParser parser = new JSONParser();
 			try {
+				BufferedReader reader = new BufferedReader(new FileReader(path));
+				String line;
+				StringBuilder outputString= new StringBuilder();
+				while((line = reader.readLine())!= null){
+					outputString.append(line);
+				}
+				JSONObject jsonObj = new JSONObject(outputString.toString());
+				Log.d("ExternalStorage read",jsonObj.getString("query"));
+				
+				SQLiteDatabase db = sqlHelper.getReadableDatabase();
 
-				Object obj = parser.parse(new FileReader("HealthPlus-1417123202380.json"));
-
-				JSONObject jsonObject = (JSONObject) obj;
-
-				String query = (String) jsonObject.get("query");
-
-				MySQLiteHelper dbHelper = new MySQLiteHelper(this);
-				double result = dbHelper.selectQuery(query);
+				double result =  sqlHelper.selectQuery(jsonObj.getString("query"));
+				
+				Log.d("ExternalStorage read", " Result :" + result);
 				
 				return Double.toString(result);
-			}
-			catch(IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
+			
 		}
 		else{
 			Log.d("ExternalStorage write Response File ", " SD card not readable");
 		}
 		return null;
 	}
-
-	//	private void readRaw(){
-	//	    //tv.append("\nData read from res/raw/textfile.txt:");
-	//	    InputStream is = this.getResources().openRawResource(R.raw.textfile);
-	//	    InputStreamReader isr = new InputStreamReader(is);
-	//	    BufferedReader br = new BufferedReader(isr, 8192);    // 2nd arg is buffer size
-	//
-	//	    // More efficient (less readable) implementation of above is the composite expression
-	//	    /*BufferedReader br = new BufferedReader(new InputStreamReader(
-	//	            this.getResources().openRawResource(R.raw.textfile)), 8192);*/
-	//
-	//	    try {
-	//	        String test;    
-	//	        while (true){               
-	//	            test = br.readLine();   
-	//	            // readLine() returns null if no more lines in the file
-	//	            if(test == null) break;
-	//	            //tv.append("\n"+"    "+test);
-	//	        }
-	//	        isr.close();
-	//	        is.close();
-	//	        br.close();
-	//	    } catch (IOException e) {
-	//	        e.printStackTrace();
-	//	    }
-	//	    //tv.append("\n\nThat is all");
-	//	}
-	//	
-	//
-
-	// Find the root of the external storage.
-	// See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
 
 }

@@ -37,6 +37,7 @@ public class MainActivity extends Activity implements OAuthCallback{
 
 	private static final String consumerSecretKey = "d31d57c0b96842548642efc94d23dabf";
 	
+	
 	TextView token;
 	TextView tokenSecret;
 

@@ -46,7 +46,7 @@ public class QueryData {
 		}else if(functionType.equals(functions[1])){
 			query.append(" AVERAGE("+columnMap.get(tableType)+") from "+tableMap.get(tableType) );
 		}
-		query.append(" where DATE BETWEEN '"+startDate+"' and '"+endDate+"' group by '"+columnMap.get(tableType)+"'" );
+		query.append(" where DATE BETWEEN '"+startDate+"' and '"+endDate+"' group by "+columnMap.get(tableType) );
 		Log.d("QueryData formQuery",query.toString());
 		return query.toString();
 	}

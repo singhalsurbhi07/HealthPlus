@@ -54,6 +54,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 	public MySQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		//super(context, DATABASE_NAME, )
 	}
 
 	@Override
@@ -63,8 +64,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL(TABLE_SLEEP_CREATE);
 		db.execSQL(TABLE_ACTIVITIES_CREATE);
 		
-		LoadData insertData = new LoadData();
-		insertData.loadTenDaysData();
+		//LoadData insertData = new LoadData();
+		//insertData.loadTenDaysData();
 	}
 
 	@Override
@@ -220,11 +221,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
-		Cursor cursor = getReadableDatabase().rawQuery(queryString, null);
+		Cursor cursor = db.rawQuery(queryString, null);
 		cursor.moveToFirst();			
-		double value = cursor.getFloat(1);
+		double value = cursor.getFloat(0);
 		
 		cursor.close();
+		
 		return value;
 	}
 }

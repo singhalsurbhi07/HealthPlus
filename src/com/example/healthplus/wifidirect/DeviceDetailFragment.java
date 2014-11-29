@@ -24,6 +24,8 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.json.JSONException;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,6 +46,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.healthplus.R;
+import com.example.healthplus.utils.ExternalStorageUtil;
 import com.example.healthplus.wifidirect.DeviceListFragment.DeviceActionListener;
 
 /**
@@ -139,7 +142,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		// User has picked an image. Transfer it to group owner i.e peer using
 		// FileTransferService.
 		File root = android.os.Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-		String path = root.getAbsolutePath()+"/healthplus/"+"request.txt";
+		String path = root.getAbsolutePath()+"/healthplus/"+"request.json";
 		//Uri uri = new Uri.Builder().appendPath(path);
 	
 		//Log.d(WiFiDirectActivity.TAG, "URI richa: " + uri);
@@ -261,7 +264,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				Log.d(WiFiDirectActivity.TAG, "Server: connection done");
 				final File f = new File(Environment.getExternalStorageDirectory() + "/"
 						+ context.getPackageName() + "/healthplus-" + System.currentTimeMillis()
-						+ ".txt");
+						+ ".json");
 
 				File dirs = new File(f.getParent());
 				if (!dirs.exists())
@@ -272,8 +275,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				InputStream inputstream = client.getInputStream();
 				
 				copyFile(inputstream, new FileOutputStream(f));
+				Log.d(WiFiDirectActivity.TAG, "server: Copy file success richa");
 				serverSocket.close();
+				Log.d(WiFiDirectActivity.TAG, "server: Socket closed richa");
 				server_running = false;
+				Log.d(WiFiDirectActivity.TAG, "server: file absolute path: " + f.getAbsolutePath());
 				return f.getAbsolutePath();
 			} catch (IOException e) {
 				Log.e(WiFiDirectActivity.TAG, e.getMessage());
@@ -289,10 +295,22 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		protected void onPostExecute(String result) {
 			if (result != null) {
 				statusText.setText("File copied - " + result);
-				Intent intent = new Intent();
-				intent.setAction(android.content.Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.parse("file://" + result), "*/*");
-				context.startActivity(intent);
+				Log.d(WiFiDirectActivity.TAG, "File copied result : : " + result);
+				//Call readFile method
+				ExternalStorageUtil util = new ExternalStorageUtil();
+				String response = null;
+				try {
+					response = util.readFile(result);
+				} catch (IOException | JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				Log.d(WiFiDirectActivity.TAG, "RESPONSE :" + response);
+				//Intent intent = new Intent();
+				//intent.setAction(android.content.Intent.ACTION_VIEW);
+				//intent.setDataAndType(Uri.parse("file://" + result), "*/*");
+				//context.startActivity(intent);
 			}
 
 		}
