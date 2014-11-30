@@ -7,7 +7,9 @@ import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -146,8 +148,17 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 		int res = checkValidity();
 		if(res<0){
 			formQuery();
-			Intent i = new Intent(this,WiFiDirectActivity.class);
-			startActivity(i);
+			String uri = "file://"+Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/healthplus/request.json";
+			Intent i  = new Intent();
+			i.setAction(Intent.ACTION_SEND);
+			i.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
+			i.setType("application/json");
+			startActivity(Intent.createChooser(i, "share file via"));
+
+			
+			//Intent i = new Intent(this,WiFiDirectActivity.class);
+			//startActivity(i);
 			
 		}else{
 			Context context = getApplicationContext();

@@ -13,6 +13,7 @@ import io.oauth.OAuth;
 
 import com.example.healthplus.database.MySQLiteHelper;
 import com.example.healthplus.oauth.SerializableOauthData;
+import com.example.healthplus.services.FileLocator;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -37,7 +38,6 @@ public class MainActivity extends Activity implements OAuthCallback{
 
 	private static final String consumerSecretKey = "d31d57c0b96842548642efc94d23dabf";
 	
-	
 	TextView token;
 	TextView tokenSecret;
 
@@ -55,6 +55,11 @@ public class MainActivity extends Activity implements OAuthCallback{
             .defaultDisplayImageOptions(defaultOptions)
             .build();
         ImageLoader.getInstance().init(config);
+        Intent i = new Intent(this, FileLocator.class);
+        // Add extras to the bundle
+        //i.putExtra("foo", "bar");
+        // Start the service
+        startService(i);
 		if(data == null){
 		final OAuth oauth = new OAuth(MainActivity.this);
 		//oauth.initialize(consumerKey);
@@ -68,11 +73,12 @@ public class MainActivity extends Activity implements OAuthCallback{
 	
 		oauth.popup("fitbit", MainActivity.this);
 		}else{
-			Intent i = new Intent(this, UserActivity.class);
+			Intent intent = new Intent(this, UserActivity.class);
 			//i.putExtra("OauthData", data);
-			startActivity(i);
+			startActivity(intent);
 			
 		}
+		
 			
 			
 			

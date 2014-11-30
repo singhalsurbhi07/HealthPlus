@@ -16,8 +16,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
-    <uses-permission  android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:allowBackup="true"
@@ -66,16 +65,23 @@
             android:label="@string/title_activity_user_query" >
         </activity>
         <activity
-            android:name="com.example.healthplus.wifidirect.WiFiDirectActivity"
+            android:name=".wifidirect.WiFiDirectActivity"
             android:label="@string/title_activity_wifidirect" >
-           
         </activity>
+        <activity android:name=".fragments.DatePickerFragment" >
+        </activity>
+
+        <service
+            android:name=".wifidirect.FileTransferService"
+            android:enabled="true" />
+
         <activity
-            android:name="com.example.healthplus.fragments.DatePickerFragment"
-            >
-           
+            android:name="com.example.healthplus.wifidirect.SenderWifiActivity"
+            android:label="@string/title_activity_sender_wifi" >
         </activity>
-        <service android:enabled="true" android:name="com.example.healthplus.wifidirect.FileTransferService" />
+        <service
+          android:name="com.example.healthplus.services.FileLocator"
+          android:exported="false"/>
     </application>
 
 </manifest>
