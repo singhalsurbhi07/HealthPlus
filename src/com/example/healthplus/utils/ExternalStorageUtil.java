@@ -14,12 +14,15 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore.Files;
 import android.util.Log;
 
+import com.example.healthplus.UserActivity;
 import com.example.healthplus.database.MySQLiteHelper;
 import com.example.healthplus.oauth.SerializableOauthData;
 
@@ -150,6 +153,9 @@ public class ExternalStorageUtil extends Activity  {
 				pw.flush();
 				pw.close();
 				f.close();
+				Log.d("ExternalStorage","sending file to master");
+				
+
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

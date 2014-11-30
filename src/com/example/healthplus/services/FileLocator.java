@@ -9,9 +9,11 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.healthplus.UserActivity;
 import com.example.healthplus.utils.ExternalStorageUtil;
 
 public class FileLocator extends IntentService {
@@ -39,6 +41,15 @@ public class FileLocator extends IntentService {
 					try {
 						Log.d("FileLocatorService", "Now read file");
 						util.readFile(reqPath,userName);
+						String uri = "file://"+Environment.getExternalStoragePublicDirectory(
+								Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/healthplus/response.txt";
+						//Context con = getApplicationContext();
+						Intent i  = new Intent();
+						i.setAction(Intent.ACTION_SEND);
+						i.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
+						i.setType("text/rtf");
+						i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(i);
 						break;
 						
 					} catch (IOException | JSONException e) {
