@@ -13,6 +13,8 @@ import org.json.JSONObject;
 
 import com.example.healthplus.oauth.SerializableOauthData;
 import com.example.healthplus.utils.ApiCallHelper;
+import com.example.healthplus.utils.DateUtil;
+import com.example.healthplus.utils.LoadData;
 import com.example.healthplus.utils.Units;
 import com.example.healthplus.wifidirect.WiFiDirectActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -129,30 +131,30 @@ public class UserActivity extends Activity {
 		Editor editor = sharedpreferences.edit();
 		editor.putString("UserName", getName(user));
 		editor.commit();
-		
+
 
 
 
 	}
-	
+
 	private void getUserPic(JSONObject obj){
 		ImageLoader loader = ImageLoader.getInstance();
-		
-			try {
-				if(obj.has("avatar")){
+
+		try {
+			if(obj.has("avatar")){
 				loader.displayImage(obj.getString("avatar"), ivPicVal);
-				}
-				else if(obj.has("avatar150")){
-					loader.displayImage(obj.getString("avatar150"), ivPicVal);
-				}else{
-					ivPicVal.setImageResource(R.drawable.ic_user_def);
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-		
-		
+			else if(obj.has("avatar150")){
+				loader.displayImage(obj.getString("avatar150"), ivPicVal);
+			}else{
+				ivPicVal.setImageResource(R.drawable.ic_user_def);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 	}
 
 	private String getName(JSONObject obj){
@@ -224,7 +226,7 @@ public class UserActivity extends Activity {
 			return "Height not specified";
 		}
 	}
-	
+
 	private String getWeight(JSONObject obj){
 		StringBuilder weight = new StringBuilder();
 
@@ -247,12 +249,12 @@ public class UserActivity extends Activity {
 			return "weight not specified";
 		}
 	}
-	
+
 	private String getMemberSince(JSONObject obj){
 		try{
-		if(obj.has("memberSince")){
-			return obj.getString("memberSince");
-		}
+			if(obj.has("memberSince")){
+				return obj.getString("memberSince");
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -287,7 +289,7 @@ public class UserActivity extends Activity {
 		}
 
 	}
-	
+
 	public void onContinue(View v){
 		Intent i = new Intent(UserActivity.this,MenuActivity.class);
 		startActivity(i);
@@ -311,17 +313,25 @@ public class UserActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	public void onSyncAction(MenuItem mi) {
-	     // handle click here
+		// handle click here
 		Log.d("UserActivity","OnSyncAction");
-		ApiCallHelper helper = new ApiCallHelper();
-		helper.getUserWaterData(null);
-		helper.getUserSleepData(null);
-		helper.getUserFoodData();
-		helper.getUserActivitiesData();
-	  }
-	
+
+		ApiCallHelper helper = new ApiCallHelper();		
+		String date = DateUtil.getYesterdayDateString();
+
+		/*helper.getUserWaterData(date);
+		helper.getUserSleepData(date);
+		helper.getUserFoodData(date);
+		helper.getUserActivitiesData(date);
+		*/
+		//Test ot load ten days of history data
+		LoadData insertData = new LoadData();
+		insertData.loadTenDaysData();
+
+	}
+
 	public void onWiFiConnect(MenuItem mi){
 		Intent i = new Intent(this,WiFiDirectActivity.class);
 		startActivity(i);

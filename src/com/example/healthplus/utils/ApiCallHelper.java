@@ -30,12 +30,12 @@ public class ApiCallHelper {
 		return sleepJson;
 	}
 
-	public void setSleepJson(String sleepJson) {
+	public void setSleepJson(String sleepJson, String date) {
 		Log.d("ApiCallHelper", "setSleepMOdel" );
 
 		this.sleepJson = sleepJson;
 		try {
-			sqlHelper.addSleepRow(sleepJson);
+			sqlHelper.addSleepRow(sleepJson, date);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,12 +46,12 @@ public class ApiCallHelper {
 		return foodJson;
 	}
 
-	public void setFoodJson(String foodJson) {
+	public void setFoodJson(String foodJson, String date) {
 
 		this.foodJson = foodJson;
 
 		try {
-			sqlHelper.addFoodRow(foodJson);
+			sqlHelper.addFoodRow(foodJson, date);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,11 +62,11 @@ public class ApiCallHelper {
 		return activitiesJson;
 	}
 
-	public void setActivitiesJson(String activitiesJson) {
+	public void setActivitiesJson(String activitiesJson, String date) {
 		this.activitiesJson = activitiesJson;
 
 		try {
-			sqlHelper.addActivitiesRow(activitiesJson);
+			sqlHelper.addActivitiesRow(activitiesJson, date);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,11 +78,11 @@ public class ApiCallHelper {
 		return waterJson;
 	}
 
-	public void setWaterModel(String waterModel) {
+	public void setWaterModel(String waterModel, String date) {
 		Log.d("ApiCallHelper","setWaterModel");
 		this.waterJson = waterModel;
 		try {
-			sqlHelper.addWaterRow(waterJson);
+			sqlHelper.addWaterRow(waterJson, date);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,14 +90,14 @@ public class ApiCallHelper {
 
 	}
 
-	public void getUserWaterData(String dateStr){
+	public void getUserWaterData(final String dateStr){
 
-		Log.d("ApiCallHelper","getUserWaterData");
+		Log.d("ApiCallHelper"," getUserWaterData for ::" + dateStr);
 
-		if (dateStr == null) {
+		/*if (dateStr == null) {
 
 			dateStr = DateUtil.getYesterdayDateString();
-		}
+		}*/
 		data = SerializableOauthData.getOauthData();
 		data.http("/1/user/-/foods/log/water/date/"+ dateStr +".json", new OAuthRequest() {
 			private URL url;
@@ -130,7 +130,7 @@ public class ApiCallHelper {
 						total.append(line);
 					}
 					System.out.println(total.toString());
-					setWaterModel(total.toString());
+					setWaterModel(total.toString(), dateStr);
 					//JSONObject result = new JSONObject(total.toString());
 					//waterComsumpt  = new WaterConsumeModel(result);
 				} catch (Exception e) { e.printStackTrace(); }
@@ -144,11 +144,9 @@ public class ApiCallHelper {
 		});
 	}
 
-	public void getUserSleepData(String dateStr){
+	public void getUserSleepData(final String dateStr){
 
-		if (dateStr == null) {
-			dateStr = DateUtil.getYesterdayDateString();
-		}
+		Log.d("ApiCallHelper"," getUserSleepData for ::" + dateStr);
 
 		data = SerializableOauthData.getOauthData();
 		data.http("/1/user/-/sleep/date/" + dateStr +".json", new OAuthRequest() {
@@ -185,7 +183,7 @@ public class ApiCallHelper {
 					//System.out.println(total.toString());
 					JSONObject result = new JSONObject(total.toString());
 					//sleepObj = new SleepModel(result);
-					setSleepJson(total.toString());
+					setSleepJson(total.toString(), dateStr);
 
 				} catch (Exception e) { e.printStackTrace(); }
 			}
@@ -198,9 +196,12 @@ public class ApiCallHelper {
 		});
 	}
 
-	public void getUserFoodData(){
+	public void getUserFoodData(final String dateStr){
+		
+		Log.d("ApiCallHelper"," getUserFoodData for ::" + dateStr);
+		
 		data = SerializableOauthData.getOauthData();
-		data.http("/1/user/-/foods/log/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
+		data.http("/1/user/-/foods/log/date/" + dateStr + ".json", new OAuthRequest() {
 			private URL url;
 			private URLConnection con;
 			@Override
@@ -232,7 +233,7 @@ public class ApiCallHelper {
 					}
 					System.out.println(total.toString());
 					JSONObject result = new JSONObject(total.toString());
-					setFoodJson(total.toString());
+					setFoodJson(total.toString(), dateStr);
 				} catch (Exception e) { e.printStackTrace(); }
 			}
 
@@ -244,9 +245,12 @@ public class ApiCallHelper {
 		});
 	}
 
-	public void getUserActivitiesData(){
+	public void getUserActivitiesData(final String dateStr){
+		
+		Log.d("ApiCallHelper"," getUserActivitiesData for ::" + dateStr);
+
 		data = SerializableOauthData.getOauthData();
-		data.http("/1/user/-/activities/date/"+DateUtil.getYesterdayDateString()+".json", new OAuthRequest() {
+		data.http("/1/user/-/activities/date/" + dateStr + ".json", new OAuthRequest() {
 			private URL url;
 			private URLConnection con;
 			@Override
@@ -276,7 +280,7 @@ public class ApiCallHelper {
 						total.append(line);
 					}
 					System.out.println(total.toString());
-					setActivitiesJson(total.toString());
+					setActivitiesJson(total.toString(), dateStr);
 
 				} catch (Exception e) { e.printStackTrace(); }
 			}

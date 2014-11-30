@@ -82,7 +82,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	}
 
 	// Insert record into the database
-	public void addWaterRow(String waterStr) throws JSONException {
+	public void addWaterRow(String waterStr, String date) throws JSONException {
 		Log.d("MysqliteHelper","addwaterItem");
 
 		JSONObject waterJSON = new JSONObject(waterStr);		
@@ -91,7 +91,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		// Define values for each field
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
+		//values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
+		values.put(COLUMN_ID, date);
 		values.put(COLUMN_AMOUNT, Float.parseFloat(amount)); 
 		// Insert Row
 		long rowId=db.insert(TBL_WATER, null, values);
@@ -100,7 +101,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		// Closing database connection
 	}
 
-	public void addSleepRow(String sleepStr) throws JSONException {
+	public void addSleepRow(String sleepStr, String date) throws JSONException {
 
 		Log.d("MysqliteHelper","addSleepRow");
 
@@ -113,7 +114,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		// Define values for each field
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
+		//values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
+		values.put(COLUMN_ID, date);
 		values.put("TOTAL_MINUTES_ASLEEP", totalMinutesAsleep);
 		values.put("MINUTES_AWAKE", totalMinutesAwake);
 		values.put("RESTLESS_DURATION", totalRestlessMinutes);
@@ -123,7 +125,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.close(); 
 	}
 
-	public void addFoodRow(String foodStr) throws JSONException {
+	public void addFoodRow(String foodStr, String date) throws JSONException {
 
 		Log.d("MysqliteHelper","addFoodRow");
 
@@ -139,7 +141,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		// Define values for each field
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
+		//values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
+		values.put(COLUMN_ID, date);
 		values.put("CALORIES", calories);
 		values.put("CARBS", carbs);
 		values.put("FAT", fat);
@@ -153,7 +156,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.close();
 	}
 
-	public void addActivitiesRow(String activitiesStr) throws JSONException {
+	public void addActivitiesRow(String activitiesStr, String date) throws JSONException {
 
 		Log.d("MysqliteHelper","addActivitiesRow");
 
@@ -167,7 +170,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		
 		// Define values for each field
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_ID, DateUtil.getYesterdayDateString()); 
+		//values.put(COLUMN_ID, DateUtil.getYesterdayDateString());		
+		values.put(COLUMN_ID, date);
 		values.put("CALORIES_OUT", calories_out);
 		values.put("STEPS", steps);
 		values.put("DISTANCE", distance);
