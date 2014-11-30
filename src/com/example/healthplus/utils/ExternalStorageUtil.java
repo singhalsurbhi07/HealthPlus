@@ -7,15 +7,15 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.provider.MediaStore.Files;
 import android.util.Log;
 
 import com.example.healthplus.database.MySQLiteHelper;
@@ -24,6 +24,7 @@ import com.example.healthplus.oauth.SerializableOauthData;
 public class ExternalStorageUtil extends Activity  {
 
 	MySQLiteHelper sqlHelper = SerializableOauthData.getSqlHelper();
+	public static HashMap<String, Double> responseMap = new HashMap<String, Double>();
 	
 	public static boolean isExternalStorageWritable() {
 		String state = Environment.getExternalStorageState();
@@ -42,6 +43,7 @@ public class ExternalStorageUtil extends Activity  {
 		}
 		return false;
 	}
+	
 	public static void writeToSDFile(String query){
 
 		if(isExternalStorageWritable()){
@@ -53,6 +55,7 @@ public class ExternalStorageUtil extends Activity  {
 			JSONObject obj = new JSONObject();
 			//obj.put("deviceName", );
 			try {
+				obj.put("Type", "request");
 				obj.put("query", query);
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
@@ -103,30 +106,35 @@ public class ExternalStorageUtil extends Activity  {
 	/** Method to read in a text file placed in the res/raw directory of the application. The
 	  method reads in all lines of the file sequentially. */
 
-	public void writeResponseFileToDeviceStorage() {
+	public void writeResponseFileToDeviceStorage(String resultValue) {
 
 		if(isExternalStorageWritable()){
 
 			JSONObject obj = new JSONObject();
 			try {
-				String response = null;//readFile();
-				obj.put("result", response);
+				obj.put("userName", "Shikha");
+				obj.put("result", resultValue);
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}
-			File file = new File(Environment.getExternalStoragePublicDirectory(
+			/*File file = new File(Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DOWNLOADS), "healthplus");
 			if (!file.mkdirs()) {
 				Log.d("External Storage Directory ", "Directory not created");
 			}
-			Log.d("External Storage Root=",file.getAbsolutePath());
-
-			File dir = new File("/storage/extSdCard/healthplus");
-			Log.d("ExternalStorage writeResponseFile",dir.getAbsolutePath());
-			File resfile = new File(file, "Response.json");
-			Log.d("ExternalStorage writeFile Response File",resfile.getAbsolutePath());
+			Log.d("External Storage Root=",file.getAbsolutePath());*/
+	
+			File file = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DOWNLOADS), "healthplus");
+			if (!file.mkdirs()) {
+				Log.d("External Storage dir ", "Directory not created");
+			}
+			//Log.d("Externalstorage root=",file.getAbsolutePath());
+			File resfile = new File(file, "response.txt");
+			Log.d("ExternalStorage writeFile requestFileName",resfile.getAbsolutePath());
 			Log.d("ExternalStorage writeFile",file.getAbsolutePath());
 
+			
 			try {
 				FileOutputStream f = new FileOutputStream(resfile);
 				PrintWriter pw = new PrintWriter(f);
@@ -153,31 +161,39 @@ public class ExternalStorageUtil extends Activity  {
 				BufferedReader reader = new BufferedReader(new FileReader(path));
 				String line;
 				StringBuilder outputString= new StringBuilder();
+				Log.d("ReadFile" , "Reached Read File method!!");
 				while((line = reader.readLine())!= null){
 					outputString.append(line);
 				}
+				//Read from REQUEST JSON Object
+				
 				JSONObject jsonObj = new JSONObject(outputString.toString());
 				Log.d("ExternalStorage read",jsonObj.getString("query"));
 				
 				SQLiteDatabase db = sqlHelper.getReadableDatabase();
 
-				double result =  sqlHelper.selectQuery(jsonObj.getString("query"));
+				Double result =  sqlHelper.selectQuery(jsonObj.getString("query"));
+				File file = new File(path);
+                boolean deleted = file.delete();
+                Log.d("File", "Request file deleted!!");
+                
+                responseMap.put("Shikha", result);
+				responseMap.put("Surbhi", 56.0);
 				
 				Log.d("ExternalStorage read", " Result :" + result);
+								
+				writeResponseFileToDeviceStorage(Double.toString(result));
 				
 				return Double.toString(result);
+				
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
-			}
-			
-			
-			
+			}			
 		}
 		else{
 			Log.d("ExternalStorage write Response File ", " SD card not readable");
 		}
 		return null;
 	}
-
 }

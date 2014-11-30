@@ -55,11 +55,7 @@ public class MainActivity extends Activity implements OAuthCallback{
             .defaultDisplayImageOptions(defaultOptions)
             .build();
         ImageLoader.getInstance().init(config);
-        Intent i = new Intent(this, FileLocator.class);
-        // Add extras to the bundle
-        //i.putExtra("foo", "bar");
-        // Start the service
-        startService(i);
+        
 		if(data == null){
 		final OAuth oauth = new OAuth(MainActivity.this);
 		//oauth.initialize(consumerKey);

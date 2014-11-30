@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.healthplus.services.FileLocator;
 //import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 import com.example.healthplus.wifidirect.DeviceListFragment.DeviceActionListener;
 import com.example.healthplus.R;
@@ -79,6 +80,11 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null);
+        Intent i = new Intent(this, FileLocator.class);
+        // Add extras to the bundle
+        //i.putExtra("foo", "bar");
+        // Start the service
+        startService(i);
     }
 
     /** register the BroadcastReceiver with the intent values to be matched */
