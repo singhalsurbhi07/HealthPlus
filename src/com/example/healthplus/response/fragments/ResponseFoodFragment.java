@@ -39,7 +39,9 @@ public class ResponseFoodFragment {
 
 	public void onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		PieChart mPieChart = (PieChart) view.findViewById(R.id.piechart);
+		view = inflater.inflate(R.layout.activity_response_food_fragment, container, false);
+
+		PieChart mPieChart = (PieChart) view.findViewById(R.id.ResponseFoodPiechart);
 		int counter = 0;
 		for (Map.Entry<String, Double> entry : ExternalStorageUtil.responseMap.entrySet()) {
 			counter = counter + 1;

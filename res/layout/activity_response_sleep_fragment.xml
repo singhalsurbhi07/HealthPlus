@@ -10,7 +10,7 @@
     
     <org.eazegraph.lib.charts.BarChart
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/barchart"
+    android:id="@+id/ResponseSleepBarchart"
     android:layout_width="match_parent"
     android:layout_height="256dp"
     android:padding="10dp"

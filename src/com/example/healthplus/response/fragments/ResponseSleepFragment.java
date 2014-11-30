@@ -1,49 +1,40 @@
 package com.example.healthplus.response.fragments;
 
-import io.oauth.OAuthData;
-import io.oauth.OAuthRequest;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.eazegraph.lib.charts.BarChart;
 import org.eazegraph.lib.models.BarModel;
-import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.healthplus.R;
-import com.example.healthplus.datamodels.EachSleepModel;
-import com.example.healthplus.datamodels.QueryData;
-import com.example.healthplus.datamodels.Request;
-import com.example.healthplus.datamodels.SleepModel;
-import com.example.healthplus.oauth.SerializableOauthData;
 import com.example.healthplus.utils.ExternalStorageUtil;
 
 public class ResponseSleepFragment extends Fragment {
 
 	View view;
 	
-	private int getColor(int val){
-		int col=0;
-		switch(val){
-		case 1 : col = Color.parseColor("#6699FF");
-		break;
-		case 2 : col = Color.parseColor("#990033");
-		break;
-		case 3 :col = Color.parseColor("#0066CC");
-		break;
+	private int getColor(int val) {
+		
+		int col = 0;		
+		switch(val) {
+			case 1 : col = Color.parseColor("#FE6DA8");
+				break;
+			case 2 : col = Color.parseColor("#56B7F1");
+				break;
+			case 3 : col = Color.parseColor("#CDA67F");
+				break;
+			case 4 : col = Color.parseColor("#FED70E");
+				break;
+			case 5 : col = Color.parseColor("#00CC00");
+				break;
+			case 6 : col = Color.parseColor("#CC00FF");
+				break;
 		}
 		return col;
 	}
@@ -51,9 +42,9 @@ public class ResponseSleepFragment extends Fragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Defines the xml file for the fragment
-		view = inflater.inflate(R.layout.activity_response_fragment, container, false);
+		view = inflater.inflate(R.layout.activity_response_sleep_fragment, container, false);
 
-		BarChart mBarChart = (BarChart) view.findViewById(R.id.barchart);
+		BarChart mBarChart = (BarChart) view.findViewById(R.id.ResponseSleepBarchart);
 		int counter = 0;
 		
 		for (Map.Entry<String, Double> entry : ExternalStorageUtil.responseMap.entrySet()) {
