@@ -482,17 +482,18 @@ containing a value of this type.
         public static final int activity_main=0x7f030001;
         public static final int activity_menu=0x7f030002;
         public static final int activity_options=0x7f030003;
-        public static final int activity_sleep_fragment=0x7f030004;
-        public static final int activity_user=0x7f030005;
-        public static final int activity_user_query=0x7f030006;
-        public static final int activity_water_consumption_fragment=0x7f030007;
-        public static final int device_detail=0x7f030008;
-        public static final int device_list=0x7f030009;
-        public static final int each_sharing_step=0x7f03000a;
-        public static final int fragment_activities=0x7f03000b;
-        public static final int main=0x7f03000c;
-        public static final int menu_component=0x7f03000d;
-        public static final int row_devices=0x7f03000e;
+        public static final int activity_response_fragment=0x7f030004;
+        public static final int activity_sleep_fragment=0x7f030005;
+        public static final int activity_user=0x7f030006;
+        public static final int activity_user_query=0x7f030007;
+        public static final int activity_water_consumption_fragment=0x7f030008;
+        public static final int device_detail=0x7f030009;
+        public static final int device_list=0x7f03000a;
+        public static final int each_sharing_step=0x7f03000b;
+        public static final int fragment_activities=0x7f03000c;
+        public static final int main=0x7f03000d;
+        public static final int menu_component=0x7f03000e;
+        public static final int row_devices=0x7f03000f;
     }
     public static final class menu {
         public static final int action_items=0x7f080000;
