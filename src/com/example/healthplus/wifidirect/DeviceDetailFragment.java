@@ -299,12 +299,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				//Call readFile method
 				ExternalStorageUtil util = new ExternalStorageUtil();
 				String response = null;
-				try {
-					response = util.readFile(result);
-				} catch (IOException | JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
 				
 				Log.d(WiFiDirectActivity.TAG, "RESPONSE :" + response);
 				//Intent intent = new Intent();

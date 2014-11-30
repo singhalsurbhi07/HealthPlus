@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -141,13 +142,18 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 	
 	private void formQuery(){
 		String query = QueryData.formQuery(functionVal, dataVal, startDateVal, endDateVal);
-		ExternalStorageUtil.writeToSDFile(query);
+		SharedPreferences sharedpreferences = 
+				getSharedPreferences("APP_PREF", Context.MODE_PRIVATE);
+		String userName = sharedpreferences.getString("UserName","master");
+		Log.d("UserQuery formQuery userName",userName);
+		ExternalStorageUtil.writeToSDFile(query,userName);
 	}
 	
 	public void onStartSharingClicked(View v){
 		int res = checkValidity();
 		if(res<0){
 			formQuery();
+			
 			String uri = "file://"+Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/healthplus/request.json";
 			Intent i  = new Intent();

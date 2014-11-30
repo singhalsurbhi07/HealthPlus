@@ -19,7 +19,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -122,6 +125,10 @@ public class UserActivity extends Activity {
 		tvHeightVal.setText(getHeight(user));
 		tvWeightVal.setText(getWeight(user));
 		tvMemberSinceVal.setText(getMemberSince(user));
+		SharedPreferences sharedpreferences = getSharedPreferences("APP_PREF", Context.MODE_PRIVATE);
+		Editor editor = sharedpreferences.edit();
+		editor.putString("UserName", getName(user));
+		editor.commit();
 		
 
 

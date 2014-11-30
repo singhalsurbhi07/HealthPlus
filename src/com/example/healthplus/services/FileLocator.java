@@ -5,14 +5,17 @@ import java.io.IOException;
 
 import org.json.JSONException;
 
-import com.example.healthplus.utils.ExternalStorageUtil;
-
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.healthplus.utils.ExternalStorageUtil;
+
 public class FileLocator extends IntentService {
+	SharedPreferences sharedpreferences;
 	  // Must create a default constructor
 	  public FileLocator() {
 	    // Used to name the worker thread, important only for debugging.
@@ -21,6 +24,10 @@ public class FileLocator extends IntentService {
 
 	  @Override
 	  protected void onHandleIntent(Intent intent) {
+		  sharedpreferences = 
+					getSharedPreferences("APP_PREF", Context.MODE_PRIVATE);
+			String userName = sharedpreferences.getString("UserName","master");
+			Log.d("FileLocator userName",userName);
 	    // This describes what will happen when service is triggered
 		  String reqPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ShareViaWifi/request.json";
 		  Log.d("FileLocator req path",reqPath);
@@ -31,7 +38,7 @@ public class FileLocator extends IntentService {
 					//String response = null;
 					try {
 						Log.d("FileLocatorService", "Now read file");
-						util.readFile(reqPath);
+						util.readFile(reqPath,userName);
 						break;
 						
 					} catch (IOException | JSONException e) {

@@ -13,6 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.provider.MediaStore.Files;
@@ -25,7 +27,7 @@ public class ExternalStorageUtil extends Activity  {
 
 	MySQLiteHelper sqlHelper = SerializableOauthData.getSqlHelper();
 	public static HashMap<String, Double> responseMap = new HashMap<String, Double>();
-	
+	private static SharedPreferences sharedpreferences;
 	public static boolean isExternalStorageWritable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -43,8 +45,10 @@ public class ExternalStorageUtil extends Activity  {
 		}
 		return false;
 	}
-	
-	public static void writeToSDFile(String query){
+	public static void writeToSDFile(String query,String userName){
+		
+		
+
 
 		if(isExternalStorageWritable()){
 
@@ -55,8 +59,10 @@ public class ExternalStorageUtil extends Activity  {
 			JSONObject obj = new JSONObject();
 			//obj.put("deviceName", );
 			try {
-				obj.put("Type", "request");
+				obj.put("type", "request");
 				obj.put("query", query);
+				//obj.put("Type", "Request");
+				obj.put("userName",userName );
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -106,14 +112,15 @@ public class ExternalStorageUtil extends Activity  {
 	/** Method to read in a text file placed in the res/raw directory of the application. The
 	  method reads in all lines of the file sequentially. */
 
-	public void writeResponseFileToDeviceStorage(String resultValue) {
+	public void writeResponseFileToDeviceStorage(String resultValue,String userName) {
 
 		if(isExternalStorageWritable()){
 
 			JSONObject obj = new JSONObject();
 			try {
-				obj.put("userName", "Shikha");
+				obj.put("userName", userName);
 				obj.put("result", resultValue);
+				obj.put("type", "Response");
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}
@@ -154,7 +161,7 @@ public class ExternalStorageUtil extends Activity  {
 	}
 
 
-	public String readFile(String path) throws IOException, JSONException{
+	public String readFile(String path, String userName) throws IOException, JSONException{
 
 		if(isExternalStorageReadable()) {
 			try {
@@ -182,7 +189,7 @@ public class ExternalStorageUtil extends Activity  {
 				
 				Log.d("ExternalStorage read", " Result :" + result);
 								
-				writeResponseFileToDeviceStorage(Double.toString(result));
+				writeResponseFileToDeviceStorage(Double.toString(result),userName);
 				
 				return Double.toString(result);
 				
@@ -196,4 +203,5 @@ public class ExternalStorageUtil extends Activity  {
 		}
 		return null;
 	}
+
 }
