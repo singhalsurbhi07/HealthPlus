@@ -23,6 +23,8 @@ import com.example.healthplus.datamodels.QueryData;
 import com.example.healthplus.fragments.AlertDialogRadio;
 import com.example.healthplus.fragments.AlertDialogRadio.AlertPositiveListener;
 import com.example.healthplus.fragments.DatePickerFragment;
+import com.example.healthplus.services.FileLocator;
+import com.example.healthplus.services.ResponseFileService;
 import com.example.healthplus.utils.ExternalStorageUtil;
 import com.example.healthplus.wifidirect.WiFiDirectActivity;
 
@@ -146,7 +148,8 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 				getSharedPreferences("APP_PREF", Context.MODE_PRIVATE);
 		String userName = sharedpreferences.getString("UserName","master");
 		Log.d("UserQuery formQuery userName",userName);
-		ExternalStorageUtil.writeToSDFile(query,userName);
+		ExternalStorageUtil.writeRequestToDownloads(query);
+		
 	}
 	
 	public void onStartSharingClicked(View v){
@@ -154,13 +157,17 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 		if(res<0){
 			formQuery();
 			
+			
 			String uri = "file://"+Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/healthplus/request.json";
-			Intent i  = new Intent();
-			i.setAction(Intent.ACTION_SEND);
-			i.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
-			i.setType("application/json");
-			startActivity(Intent.createChooser(i, "share file via"));
+			Intent sendin  = new Intent();
+			sendin.setAction(Intent.ACTION_SEND);
+			sendin.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
+			sendin.setType("application/json");
+			startActivityForResult(Intent.createChooser(sendin, "share file via"),0);
+			Log.d("UserQuery","file sent, need to start activity");
+			Intent i = new Intent(this, ResponseFileService.class);
+			startService(i);
 
 			
 			//Intent i = new Intent(this,WiFiDirectActivity.class);

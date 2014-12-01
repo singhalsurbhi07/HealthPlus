@@ -32,7 +32,7 @@ public class ExternalStorageUtil extends Activity  {
 	MySQLiteHelper sqlHelper = SerializableOauthData.getSqlHelper();
 	public static HashMap<String, String> responseMap = new HashMap<String, String>();
 	private static SharedPreferences sharedpreferences;
-	
+
 	public static boolean isExternalStorageWritable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -50,7 +50,8 @@ public class ExternalStorageUtil extends Activity  {
 		}
 		return false;
 	}
-	public static void writeToSDFile(String query,String userName){
+	
+	public static void writeRequestToDownloads(String query){
 
 		if(isExternalStorageWritable()){
 
@@ -64,7 +65,7 @@ public class ExternalStorageUtil extends Activity  {
 				obj.put("type", "request");
 				obj.put("query", query);
 				//obj.put("Type", "Request");
-				obj.put("userName",userName );
+				//obj.put("userName",userName );
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -114,7 +115,7 @@ public class ExternalStorageUtil extends Activity  {
 	/** Method to read in a text file placed in the res/raw directory of the application. The
 	  method reads in all lines of the file sequentially. */
 
-	public void writeResponseFileToDeviceStorage(String resultValue,String userName) {
+	public void writeResponseFileToDownloads(String resultValue,String userName) {
 
 		if(isExternalStorageWritable()){
 
@@ -166,30 +167,27 @@ public class ExternalStorageUtil extends Activity  {
 	}
 
 
-	public void readFile(String path, String userName) throws IOException, JSONException{
+	public void readRequestFromSharedWiFi(String path, String userName) throws IOException, JSONException{
 
 		if(isExternalStorageReadable()) {
 			try {
 
 				String requestPattern = "(.*)request(.*)";
-				String responsePattern = "(.*)response(.*)";
 
 				Pattern req  = Pattern.compile(requestPattern);
-				Pattern resp  = Pattern.compile(responsePattern);
 
-				BufferedReader reader = new BufferedReader(new FileReader(path));
-				String line;
-				StringBuilder outputString= new StringBuilder();
-				Log.d("ReadFile" , " Reached Read File method!!");
-				while((line = reader.readLine())!= null){
-					outputString.append(line);
-				}
-
+				Log.d("readFile", path);
 				Log.d(" readFile", " Request file path matching pattern" + req.matcher(path));
-				Log.d(" readFile", " Response file path matching pattern" + resp.matcher(path));
-				
+
 				if(req.matcher(path) != null) {
 
+					BufferedReader reader = new BufferedReader(new FileReader(path));
+					String line;
+					StringBuilder outputString= new StringBuilder();
+					Log.d("ReadFile" , " Reached Read File method!!");
+					while((line = reader.readLine())!= null){
+						outputString.append(line);
+					}
 					//Read from REQUEST JSON Object
 
 					JSONObject jsonObj = new JSONObject(outputString.toString());
@@ -201,31 +199,9 @@ public class ExternalStorageUtil extends Activity  {
 					File file = new File(path);
 					boolean deleted = file.delete();
 					Log.d("File", "Request file deleted!!");
-
-					//responseMap.put("Shikha", result);
-					//responseMap.put("Surbhi", 56.0);
-
 					Log.d("ExternalStorage read", " Result :" + result);
 
-					writeResponseFileToDeviceStorage(Double.toString(result),userName);
-
-					//return Double.toString(result);
-				}
-				
-				if(resp.matcher(path) != null) {
-					
-					JSONObject jsonObj = new JSONObject(outputString.toString());
-
-					Log.d("readFile " , "Response " + jsonObj.getString("userName"));
-					Log.d("readFile ", " Response " + jsonObj.getString("result"));
-					
-					responseMap.put("userName", jsonObj.getString("userName"));
-					responseMap.put("result", jsonObj.getString("result"));
-
-					
-					//File file = new File(path);
-					//boolean deleted = file.delete();
-					
+					writeResponseFileToDownloads(Double.toString(result),userName);
 				}
 
 			} catch (FileNotFoundException e) {
@@ -236,7 +212,48 @@ public class ExternalStorageUtil extends Activity  {
 		else{
 			Log.d("ExternalStorage write Response File ", " SD card not readable");
 		}
-		//return null;
 	}
 
+
+	//Read response file from Downloads folder
+	public void readResponFromSharedWiFi(String path) {
+		if(isExternalStorageReadable()) {
+			try {
+				String responsePattern = "(.*)response(.*)";
+				Pattern resp  = Pattern.compile(responsePattern);
+
+				Log.d("readFile", path);
+				Log.d(" readFile", " Response file path matching pattern" + resp.matcher(path));
+
+				if(resp.matcher(path) != null) {
+
+					BufferedReader respReader = new BufferedReader(new FileReader(path));
+					String line;
+					StringBuilder respString= new StringBuilder();
+					Log.d("ReadFile" , " Reached Read File method!!");
+					while((line = respReader.readLine())!= null){
+						respString.append(line);
+					}
+
+					JSONObject respJSONObj = new JSONObject(respString.toString());
+
+					Log.d("readFile " , "Response " + respJSONObj.getString("userName"));
+					Log.d("readFile ", " Response " + respJSONObj.getString("type"));
+					Log.d("readFile ", " Response " + respJSONObj.getString("result"));
+
+					responseMap.put("userName", respJSONObj.getString("userName"));
+					responseMap.put("result", respJSONObj.getString("result"));
+
+					//File file = new File(path);
+					//boolean deleted = file.delete();
+				}
+
+			} catch (IOException e) {
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }

@@ -8,10 +8,15 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eazegraph.lib.charts.BarChart;
+import org.eazegraph.lib.charts.ValueLineChart;
 import org.eazegraph.lib.models.BarModel;
+import org.eazegraph.lib.models.ValueLinePoint;
+import org.eazegraph.lib.models.ValueLineSeries;
 import org.json.JSONObject;
 
 import android.app.Fragment;
@@ -26,6 +31,7 @@ import com.example.healthplus.R;
 import com.example.healthplus.datamodels.EachSleepModel;
 import com.example.healthplus.datamodels.SleepModel;
 import com.example.healthplus.oauth.SerializableOauthData;
+import com.example.healthplus.utils.DateUtil;
 
 public class SleepFragment extends Fragment {
 	View view;

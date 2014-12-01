@@ -75,9 +75,15 @@
             android:name=".wifidirect.FileTransferService"
             android:enabled="true" />
 
-      
+        <activity
+            android:name="com.example.healthplus.wifidirect.SenderWifiActivity"
+            android:label="@string/title_activity_sender_wifi" >
+        </activity>
         <service
           android:name="com.example.healthplus.services.FileLocator"
+          android:exported="false"/>
+        <service
+          android:name="com.example.healthplus.services.ResponseFileService"
           android:exported="false"/>
     </application>
 

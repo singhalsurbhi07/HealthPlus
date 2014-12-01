@@ -8,22 +8,29 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.json.JSONObject;
 
+import com.example.healthplus.R;
+import com.example.healthplus.R.id;
+import com.example.healthplus.R.layout;
+import com.example.healthplus.R.menu;
+import com.example.healthplus.datamodels.FoodModel;
+import com.example.healthplus.datamodels.WaterConsumeModel;
+import com.example.healthplus.oauth.SerializableOauthData;
+import com.example.healthplus.utils.DateUtil;
+
+import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.example.healthplus.R;
-import com.example.healthplus.datamodels.FoodModel;
-import com.example.healthplus.oauth.SerializableOauthData;
-import com.example.healthplus.utils.DateUtil;
 
 public class FoodFragment extends Fragment {
 	OAuthData data;
