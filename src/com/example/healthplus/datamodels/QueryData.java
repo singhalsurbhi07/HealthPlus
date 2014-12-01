@@ -3,25 +3,21 @@ package com.example.healthplus.datamodels;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Fragment;
 import android.util.Log;
 
-public class QueryData extends Fragment {
-	
-	//private static Request requestObj = new Request();
-
+public class QueryData {
 	public static String[] functions = new String[]{
-		"Total","Average"
-	};
-
+        "Total","Average"
+    };
+	
 	public static String[] Tables = new String[]{
-		"Sleep","Water","Calories Intake","Calories Burn"
-	};
-
+        "Sleep","Water","Calories Intake","Calories Burn"
+    };
+	
 	public static Map<String,String> tableMap = new HashMap<>();
 	public static Map<String,String> columnMap = new HashMap<>();
-	//public static Map<String,String> functionMap = new HashMap<>();
-
+ 	//public static Map<String,String> functionMap = new HashMap<>();
+	
 	public static void initialiseMap(){
 		tableMap.put(Tables[0], "SLEEP");
 		tableMap.put(Tables[1], "WATER");
@@ -31,33 +27,27 @@ public class QueryData extends Fragment {
 		columnMap.put(Tables[1], "AMOUNT");
 		columnMap.put(Tables[2], "CALORIES");
 		columnMap.put(Tables[3], "CALORIES_OUT");
+		
+		
+		
+		
 	}
-
-
+	
+	
+	
+	
+	
 	public static String formQuery(String functionType, String tableType, String startDate, String endDate){
 		initialiseMap();
 		StringBuilder query = new StringBuilder();
-
 		query.append("Select ");
 		if(functionType.equals(functions[0])){
-
-			Request.setCOL_FUNCTION(functions[0]);
 			query.append(" Sum("+columnMap.get(tableType)+") from "+tableMap.get(tableType) );
-
 		}else if(functionType.equals(functions[1])){
-
-			Request.setCOL_FUNCTION(functions[1]);
 			query.append(" AVERAGE("+columnMap.get(tableType)+") from "+tableMap.get(tableType) );
 		}
 		query.append(" where DATE BETWEEN '"+startDate+"' and '"+endDate+"' group by "+columnMap.get(tableType) );
 		Log.d("QueryData formQuery",query.toString());
-
-		Request.setMasterDevice("Master");
-		Request.setQuery(query.toString());
-		Request.setCOL_NAME(columnMap.get(tableType));
-		Request.setUserName("Shikha Tawari");
-		Request.setCOL_FUNCTION(tableMap.get(tableType));
-
 		return query.toString();
 	}
 }
