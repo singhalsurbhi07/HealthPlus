@@ -47,10 +47,10 @@ public class ResponseSleepFragment extends Fragment {
 		BarChart mBarChart = (BarChart) view.findViewById(R.id.ResponseSleepBarchart);
 		int counter = 0;
 		
-		for (Map.Entry<String, Double> entry : ExternalStorageUtil.responseMap.entrySet()) {
+		for (Map.Entry<String, String> entry : ExternalStorageUtil.responseMap.entrySet()) {
 
 			counter = counter + 1;
-			mBarChart.addBar(new BarModel(Double.toString(entry.getValue()), 2.f, getColor(counter)));		
+			mBarChart.addBar(new BarModel(entry.getValue(), 2.f, getColor(counter)));		
 		}
 		mBarChart.startAnimation();
 		return view;

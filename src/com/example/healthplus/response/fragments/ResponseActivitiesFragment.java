@@ -43,10 +43,10 @@ public class ResponseActivitiesFragment {
 
 		PieChart mPieChart = (PieChart) view.findViewById(R.id.ResponseActivitiesPiechart);
 		int counter = 0;
-		for (Map.Entry<String, Double> entry : ExternalStorageUtil.responseMap.entrySet()) {
+		for (Map.Entry<String, String> entry : ExternalStorageUtil.responseMap.entrySet()) {
 			counter = counter + 1;
 
-			mPieChart.addPieSlice(new PieModel("Distance", Float.parseFloat(Double.toString(entry.getValue())), getColor(counter)));
+			mPieChart.addPieSlice(new PieModel("Distance", Float.parseFloat(entry.getValue()), getColor(counter)));
 		}		
 		mPieChart.startAnimation();
 	}
