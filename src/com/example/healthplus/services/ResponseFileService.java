@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import org.json.JSONException;
 
+import com.example.healthplus.CumulativeResponseActivity;
 import com.example.healthplus.utils.ExternalStorageUtil;
 
 import android.app.IntentService;
@@ -39,6 +40,10 @@ public class ResponseFileService extends IntentService {
 
 	}
 		stopSelf();
+		Log.d(TAG,"Response File service stopped, going tp CumulativeResponseActivity");
+		Intent i  = new Intent(this, CumulativeResponseActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(i);
 	}
 	
 	private boolean  traverseResponse(String dirString){

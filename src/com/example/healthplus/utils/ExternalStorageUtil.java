@@ -30,7 +30,7 @@ import com.example.healthplus.oauth.SerializableOauthData;
 public class ExternalStorageUtil extends Activity  {
 
 	MySQLiteHelper sqlHelper = SerializableOauthData.getSqlHelper();
-	public static HashMap<String, String> responseMap = new HashMap<String, String>();
+	public static HashMap<String, String> responseMap = new HashMap<>() ;
 	private static SharedPreferences sharedpreferences;
 
 	public static boolean isExternalStorageWritable() {
@@ -51,7 +51,11 @@ public class ExternalStorageUtil extends Activity  {
 		return false;
 	}
 	
-	public static void writeRequestToDownloads(String query){
+	public HashMap<String, String> getResponseHashMap(){
+		return responseMap;
+	}
+	
+	public  void writeRequestToDownloads(String query){
 
 		if(isExternalStorageWritable()){
 
@@ -240,9 +244,11 @@ public class ExternalStorageUtil extends Activity  {
 					Log.d("readFile " , "Response " + respJSONObj.getString("userName"));
 					Log.d("readFile ", " Response " + respJSONObj.getString("type"));
 					Log.d("readFile ", " Response " + respJSONObj.getString("result"));
+					//responseMap = new HashMap<>();
 
-					responseMap.put("userName", respJSONObj.getString("userName"));
-					responseMap.put("result", respJSONObj.getString("result"));
+					//responseMap.put("userName", respJSONObj.getString("userName"));
+					//responseMap.put("result", respJSONObj.getString("result"));
+					responseMap.put(respJSONObj.getString("userName"),respJSONObj.getString("result"));
 
 					//File file = new File(path);
 					//boolean deleted = file.delete();

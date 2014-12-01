@@ -36,6 +36,7 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 	private static String startDateVal;
 	private static String endDateVal;
 	private String[] values = new String[] { "Select Function","Select Data", "Select Start Date", "Select End Date" };
+	ExternalStorageUtil util = new ExternalStorageUtil();
 	
 	private static boolean [] isSelected = new boolean [4];
 	Calendar now;
@@ -148,7 +149,7 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 				getSharedPreferences("APP_PREF", Context.MODE_PRIVATE);
 		String userName = sharedpreferences.getString("UserName","master");
 		Log.d("UserQuery formQuery userName",userName);
-		ExternalStorageUtil.writeRequestToDownloads(query);
+		util.writeRequestToDownloads(query);
 		
 	}
 	

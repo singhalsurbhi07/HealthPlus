@@ -1,12 +1,18 @@
 package com.example.healthplus.response.fragments;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 
+
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +20,10 @@ import android.view.ViewGroup;
 import com.example.healthplus.R;
 import com.example.healthplus.utils.ExternalStorageUtil;
 
-public class ResponseWaterFragment {
+public class ResponseWaterFragment extends Fragment {
+	private String TAG = "ResponseWaterFragment";
+	
+	Map<String,String> responseMap  = new HashMap<>();
 
 	View view;
 
@@ -36,18 +45,33 @@ public class ResponseWaterFragment {
 		}
 		return col;
 	}
+	
+	
+	
+	public static ResponseWaterFragment newInstance(Map<String,String> responseMap) {
+        ResponseWaterFragment fragmentDemo = new ResponseWaterFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("responseMap", (Serializable) responseMap);
+        //args.putString("someTitle", someTitle);
+        fragmentDemo.setArguments(args);
+        return fragmentDemo;
+    }
 
-	public void onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Log.d(TAG,"inside OncreateView");
 
 		view = inflater.inflate(R.layout.activity_response_water_fragment, container, false);
+		responseMap = (Map<String, String>) getArguments().getSerializable("responseMap");	
+	       
 
 		PieChart mPieChart = (PieChart) view.findViewById(R.id.ResponseWaterPiechart);
 		int counter = 0;
-		for (Map.Entry<String, String> entry : ExternalStorageUtil.responseMap.entrySet()) {
+		for (Map.Entry<String, String> entry : responseMap.entrySet()) {
 			counter = counter + 1;
 
-			mPieChart.addPieSlice(new PieModel("amount", Float.parseFloat(entry.getValue()), getColor(counter)));
+			mPieChart.addPieSlice(new PieModel(entry.getKey(), Float.parseFloat(entry.getValue()), getColor(counter)));
 		}		
 		mPieChart.startAnimation();
+		 return view;
 	}
 }
