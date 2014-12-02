@@ -318,7 +318,7 @@ public class UserActivity extends Activity {
 	     // handle click here
 		Log.d("UserActivity","OnSyncAction");
 		ApiCallHelper helper = new ApiCallHelper();
-		String date = DateUtil.getTodaysDate();
+		String date = DateUtil.getYesterdayDateString();
 		helper.getUserWaterData(date);
 		helper.getUserSleepData(date);
 		helper.getUserFoodData(date);

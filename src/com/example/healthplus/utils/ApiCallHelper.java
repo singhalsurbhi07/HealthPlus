@@ -180,7 +180,7 @@ public class ApiCallHelper {
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//System.out.println(total.toString());
+					System.out.println(total.toString());
 					JSONObject result = new JSONObject(total.toString());
 					//sleepObj = new SleepModel(result);
 					setSleepJson(total.toString(), dateStr);

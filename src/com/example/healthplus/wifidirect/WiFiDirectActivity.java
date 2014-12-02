@@ -16,6 +16,11 @@
 
 package com.example.healthplus.wifidirect;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,6 +33,7 @@ import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -80,6 +86,19 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null);
+        Log.d(TAG,"Deleting healthplus folder at slave");
+		File f = new File(Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/healthplus");
+		if(f.exists()){
+		try {
+			FileUtils.deleteDirectory(f);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}else{
+			Log.d("WifiDirectActivity","downloads folder for slave is empty");
+		}
         Intent i = new Intent(this, FileLocator.class);
         // Add extras to the bundle
         //i.putExtra("foo", "bar");

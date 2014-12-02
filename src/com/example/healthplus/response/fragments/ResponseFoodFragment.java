@@ -18,7 +18,7 @@ import com.example.healthplus.R;
 import com.example.healthplus.utils.ExternalStorageUtil;
 
 public class ResponseFoodFragment extends Fragment {
-private String TAG = "ResponseFoodFragment";
+	private String TAG = "ResponseFoodFragment";
 	
 	Map<String,String> responseMap  = new HashMap<>();
 

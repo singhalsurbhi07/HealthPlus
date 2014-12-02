@@ -1,5 +1,7 @@
 package com.example.healthplus.response.fragments;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eazegraph.lib.charts.BarChart;
@@ -16,6 +18,9 @@ import com.example.healthplus.R;
 import com.example.healthplus.utils.ExternalStorageUtil;
 
 public class ResponseSleepFragment extends Fragment {
+private String TAG = "ResponseSleepFragment";
+	
+	Map<String,String> responseMap  = new HashMap<>();
 
 	View view;
 	
@@ -38,21 +43,29 @@ public class ResponseSleepFragment extends Fragment {
 		}
 		return col;
 	}
+	
+	public static ResponseSleepFragment newInstance(Map<String,String> responseMap) {
+        ResponseSleepFragment fragmentDemo = new ResponseSleepFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("responseMap", (Serializable) responseMap);
+        fragmentDemo.setArguments(args);
+        return fragmentDemo;
+    }
 
 
-//	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//		// Defines the xml file for the fragment
-//		view = inflater.inflate(R.layout.activity_response_sleep_fragment, container, false);
-//
-//		BarChart mBarChart = (BarChart) view.findViewById(R.id.ResponseSleepBarchart);
-//		int counter = 0;
-//		
-//		for (Map.Entry<String, String> entry : ExternalStorageUtil.responseMap.entrySet()) {
-//
-//			counter = counter + 1;
-//			mBarChart.addBar(new BarModel(entry.getValue(), 2.f, getColor(counter)));		
-//		}
-//		mBarChart.startAnimation();
-//		return view;
-//	}
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// Defines the xml file for the fragment
+		view = inflater.inflate(R.layout.activity_response_sleep_fragment, container, false);
+		responseMap = (Map<String, String>) getArguments().getSerializable("responseMap");	
+		BarChart mBarChart = (BarChart) view.findViewById(R.id.ResponseSleepBarchart);
+		int counter = 0;
+		
+		for (Map.Entry<String, String> entry : responseMap.entrySet()) {
+
+			counter = counter + 1;
+			mBarChart.addBar(new BarModel(entry.getKey(), Float.parseFloat(entry.getValue()), getColor(counter)));		
+		}
+		mBarChart.startAnimation();
+		return view;
+	}
 }

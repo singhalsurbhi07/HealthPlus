@@ -1,13 +1,18 @@
 package com.example.healthplus;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +20,7 @@ import android.view.MenuItem;
 import com.example.healthplus.datamodels.Response;
 import com.example.healthplus.response.fragments.ResponseActivitiesFragment;
 import com.example.healthplus.response.fragments.ResponseFoodFragment;
+import com.example.healthplus.response.fragments.ResponseSleepFragment;
 import com.example.healthplus.response.fragments.ResponseWaterFragment;
 
 public class CumulativeResponseActivity extends Activity {
@@ -29,6 +35,19 @@ public class CumulativeResponseActivity extends Activity {
 		setContentView(R.layout.activity_cumulative_response);
 		Intent intent=this.getIntent();
 		Bundle bundle=intent.getExtras();
+		Log.d(TAG,"Deleting healthplus folder at master");
+		File f = new File(Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/healthplus");
+		if(f.exists()){
+		try {
+			FileUtils.deleteDirectory(f);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}else{
+			Log.d(TAG,"downloads folder is empty at master");
+		}
 
 		List<Response> responses=
 		               (List<Response>)bundle.getSerializable("allResponse");
@@ -47,6 +66,11 @@ public class CumulativeResponseActivity extends Activity {
 		}else if(dataType.equals("Calories Burn")){
 			Log.d(TAG,"dataType = calories burn");
 			ResponseActivitiesFragment fragmentDemo = ResponseActivitiesFragment.newInstance(responseMap);
+			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
+			ft.commit();
+		}else if(dataType.equals("Sleep")){
+			Log.d(TAG,"dataType = sleep");
+			ResponseSleepFragment fragmentDemo = ResponseSleepFragment.newInstance(responseMap);
 			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
 			ft.commit();
 		}
