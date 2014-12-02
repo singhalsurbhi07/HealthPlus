@@ -1,18 +1,20 @@
 package com.example.healthplus.services;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
-
-import org.json.JSONException;
-
-import com.example.healthplus.CumulativeResponseActivity;
-import com.example.healthplus.utils.ExternalStorageUtil;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+
+import com.example.healthplus.CumulativeResponseActivity;
+import com.example.healthplus.datamodels.Response;
+import com.example.healthplus.utils.ExternalStorageUtil;
 
 public class ResponseFileService extends IntentService {
 	private String TAG = "ResponseFileService";
@@ -20,6 +22,7 @@ public class ResponseFileService extends IntentService {
 	String resDir = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ShareViaWifi";
 	String resPattern = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ShareViaWifi/response??.txt";
 	ExternalStorageUtil util = new ExternalStorageUtil();
+	List<Response> allResponse ;
 
 	public ResponseFileService() {
 		// Used to name the worker thread, important only for debugging.
@@ -43,6 +46,9 @@ public class ResponseFileService extends IntentService {
 		Log.d(TAG,"Response File service stopped, going tp CumulativeResponseActivity");
 		Intent i  = new Intent(this, CumulativeResponseActivity.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		Bundle bundle = new Bundle();  
+		bundle.putSerializable("allResponse", (Serializable) allResponse);
+		i.putExtras(bundle);
 		startActivity(i);
 	}
 	
@@ -81,14 +87,17 @@ public class ResponseFileService extends IntentService {
 			}
 			children = dir.list();
 			Log.d(TAG,"children size = "+children.length);
+			allResponse = new ArrayList<>();
 			for (int i = 0; children != null && i < children.length; i++) {
 				File f = new File(dir, children[i]);
 				Log.d(TAG,"found response file"+f.getName());
 
 				if(r.matcher(f.getAbsolutePath()) != null){
+				
 					Log.d(TAG,"req file matches pattern"+f.getName());
 					
-						util.readResponFromSharedWiFi(f.getAbsolutePath());
+					Response eachRes = 	util.readResponFromSharedWiFi(f.getAbsolutePath());
+					allResponse.add(eachRes);
 						
 						
 					

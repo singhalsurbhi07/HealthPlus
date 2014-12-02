@@ -63,6 +63,7 @@ public class FileLocator extends IntentService {
 							Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/healthplus/response.txt";
 					//Context con = getApplicationContext();
 					Log.d(TAG,"read req done now sending the response");
+					stopSelf();
 					Intent i  = new Intent();
 					i.setAction(Intent.ACTION_SEND);
 					i.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
@@ -83,7 +84,7 @@ public class FileLocator extends IntentService {
 		}
 
 		Log.d("FileLocator","need to stop service...");
-		stopSelf();
+		
 
 
 

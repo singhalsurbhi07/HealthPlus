@@ -40,19 +40,19 @@ public class ResponseSleepFragment extends Fragment {
 	}
 
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// Defines the xml file for the fragment
-		view = inflater.inflate(R.layout.activity_response_sleep_fragment, container, false);
-
-		BarChart mBarChart = (BarChart) view.findViewById(R.id.ResponseSleepBarchart);
-		int counter = 0;
-		
-		for (Map.Entry<String, String> entry : ExternalStorageUtil.responseMap.entrySet()) {
-
-			counter = counter + 1;
-			mBarChart.addBar(new BarModel(entry.getValue(), 2.f, getColor(counter)));		
-		}
-		mBarChart.startAnimation();
-		return view;
-	}
+//	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//		// Defines the xml file for the fragment
+//		view = inflater.inflate(R.layout.activity_response_sleep_fragment, container, false);
+//
+//		BarChart mBarChart = (BarChart) view.findViewById(R.id.ResponseSleepBarchart);
+//		int counter = 0;
+//		
+//		for (Map.Entry<String, String> entry : ExternalStorageUtil.responseMap.entrySet()) {
+//
+//			counter = counter + 1;
+//			mBarChart.addBar(new BarModel(entry.getValue(), 2.f, getColor(counter)));		
+//		}
+//		mBarChart.startAnimation();
+//		return view;
+//	}
 }

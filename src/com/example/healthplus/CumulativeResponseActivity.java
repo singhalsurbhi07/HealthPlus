@@ -1,30 +1,65 @@
 package com.example.healthplus;
 
-import com.example.healthplus.datamodels.WaterConsumeModel;
-import com.example.healthplus.fragments.ActivityFragment;
-import com.example.healthplus.response.fragments.ResponseWaterFragment;
-import com.example.healthplus.utils.ExternalStorageUtil;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.healthplus.datamodels.Response;
+import com.example.healthplus.response.fragments.ResponseActivitiesFragment;
+import com.example.healthplus.response.fragments.ResponseFoodFragment;
+import com.example.healthplus.response.fragments.ResponseWaterFragment;
+
 public class CumulativeResponseActivity extends Activity {
-	ExternalStorageUtil util = new ExternalStorageUtil();
+	//ExternalStorageUtil util = new ExternalStorageUtil();
 	private static String TAG= "CumulativeResponseActivity";
+	private Map<String,String> responseMap = new HashMap<>();
+	private String dataType;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cumulative_response);
+		Intent intent=this.getIntent();
+		Bundle bundle=intent.getExtras();
+
+		List<Response> responses=
+		               (List<Response>)bundle.getSerializable("allResponse");
+		initialiseResponseMap(responses);
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ResponseWaterFragment fragmentDemo = ResponseWaterFragment.newInstance(util.getResponseHashMap());
-		ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
-		ft.commit();
+		if(dataType.equals("Water")){
+			Log.d(TAG,"dataType = water");
+			ResponseWaterFragment fragmentDemo = ResponseWaterFragment.newInstance(responseMap);
+			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
+			ft.commit();
+		}else if(dataType.equals("Calories Intake")){
+			Log.d(TAG,"dataType = calories intake");
+			ResponseFoodFragment fragmentDemo = ResponseFoodFragment.newInstance(responseMap);
+			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
+			ft.commit();
+		}else if(dataType.equals("Calories Burn")){
+			Log.d(TAG,"dataType = calories burn");
+			ResponseActivitiesFragment fragmentDemo = ResponseActivitiesFragment.newInstance(responseMap);
+			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
+			ft.commit();
+		}
 		
+		
+	}
+
+	private void initialiseResponseMap(List<Response> responses) {
+		for(Response response : responses){
+			Log.d(TAG,"response val = "+response.getResultValue());
+			responseMap.put(response.getUserName(), response.getResultValue());
+			dataType = response.getDataType();
+		}
 		
 	}
 

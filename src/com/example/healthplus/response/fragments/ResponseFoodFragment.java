@@ -1,10 +1,13 @@
 package com.example.healthplus.response.fragments;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +17,10 @@ import android.view.ViewGroup;
 import com.example.healthplus.R;
 import com.example.healthplus.utils.ExternalStorageUtil;
 
-public class ResponseFoodFragment {
+public class ResponseFoodFragment extends Fragment {
+private String TAG = "ResponseFoodFragment";
+	
+	Map<String,String> responseMap  = new HashMap<>();
 
 	View view;
 
@@ -36,18 +42,28 @@ public class ResponseFoodFragment {
 		}
 		return col;
 	}
+	
+	public static ResponseFoodFragment newInstance(Map<String,String> responseMap) {
+        ResponseFoodFragment fragmentDemo = new ResponseFoodFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("responseMap", (Serializable) responseMap);
+        fragmentDemo.setArguments(args);
+        return fragmentDemo;
+    }
 
-	public void onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.activity_response_food_fragment, container, false);
+		responseMap = (Map<String, String>) getArguments().getSerializable("responseMap");
 
 		PieChart mPieChart = (PieChart) view.findViewById(R.id.ResponseFoodPiechart);
 		int counter = 0;
-		for (Map.Entry<String, String> entry : ExternalStorageUtil.responseMap.entrySet()) {
+		for (Map.Entry<String, String> entry :responseMap.entrySet()) {
 			counter = counter + 1;
 
-			mPieChart.addPieSlice(new PieModel("Calories", Float.parseFloat(entry.getValue()), getColor(counter)));
+			mPieChart.addPieSlice(new PieModel(entry.getKey(), Float.parseFloat(entry.getValue()), getColor(counter)));
 		}		
 		mPieChart.startAnimation();
+		return view;
 	}
 }

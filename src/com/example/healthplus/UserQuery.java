@@ -149,7 +149,7 @@ public class UserQuery extends FragmentActivity implements AlertPositiveListener
 				getSharedPreferences("APP_PREF", Context.MODE_PRIVATE);
 		String userName = sharedpreferences.getString("UserName","master");
 		Log.d("UserQuery formQuery userName",userName);
-		util.writeRequestToDownloads(query);
+		util.writeRequestToDownloads(query,dataVal);
 		
 	}
 	

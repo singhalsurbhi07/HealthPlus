@@ -7,31 +7,27 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore.Files;
 import android.util.Log;
 
-import com.example.healthplus.UserActivity;
 import com.example.healthplus.database.MySQLiteHelper;
+import com.example.healthplus.datamodels.Response;
 import com.example.healthplus.oauth.SerializableOauthData;
 
 public class ExternalStorageUtil extends Activity  {
 
 	MySQLiteHelper sqlHelper = SerializableOauthData.getSqlHelper();
-	public static HashMap<String, String> responseMap = new HashMap<>() ;
+	//public static HashMap<String, String> responseMap = new HashMap<>() ;
 	private static SharedPreferences sharedpreferences;
+	//private static String responseDataType;
 
 	public static boolean isExternalStorageWritable() {
 		String state = Environment.getExternalStorageState();
@@ -51,11 +47,10 @@ public class ExternalStorageUtil extends Activity  {
 		return false;
 	}
 	
-	public HashMap<String, String> getResponseHashMap(){
-		return responseMap;
-	}
+//	
+
 	
-	public  void writeRequestToDownloads(String query){
+	public  void writeRequestToDownloads(String query,String dataType){
 
 		if(isExternalStorageWritable()){
 
@@ -68,6 +63,7 @@ public class ExternalStorageUtil extends Activity  {
 			try {
 				obj.put("type", "request");
 				obj.put("query", query);
+				obj.put("dataType", dataType);
 				//obj.put("Type", "Request");
 				//obj.put("userName",userName );
 			} catch (JSONException e1) {
@@ -119,7 +115,7 @@ public class ExternalStorageUtil extends Activity  {
 	/** Method to read in a text file placed in the res/raw directory of the application. The
 	  method reads in all lines of the file sequentially. */
 
-	public void writeResponseFileToDownloads(String resultValue,String userName) {
+	public void writeResponseFileToDownloads(String resultValue,String userName, String dataType) {
 
 		if(isExternalStorageWritable()){
 
@@ -127,7 +123,9 @@ public class ExternalStorageUtil extends Activity  {
 			try {
 				obj.put("userName", userName);
 				obj.put("result", resultValue);
-				obj.put("type", "Response");
+				//obj.put("type", "Response");
+				
+				obj.put("dataType", dataType);
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}
@@ -205,7 +203,7 @@ public class ExternalStorageUtil extends Activity  {
 					Log.d("File", "Request file deleted!!");
 					Log.d("ExternalStorage read", " Result :" + result);
 
-					writeResponseFileToDownloads(Double.toString(result),userName);
+					writeResponseFileToDownloads(Double.toString(result),userName,jsonObj.getString("dataType"));
 				}
 
 			} catch (FileNotFoundException e) {
@@ -220,7 +218,8 @@ public class ExternalStorageUtil extends Activity  {
 
 
 	//Read response file from Downloads folder
-	public void readResponFromSharedWiFi(String path) {
+	public Response readResponFromSharedWiFi(String path) {
+		Response userRes = null;
 		if(isExternalStorageReadable()) {
 			try {
 				String responsePattern = "(.*)response(.*)";
@@ -240,15 +239,19 @@ public class ExternalStorageUtil extends Activity  {
 					}
 
 					JSONObject respJSONObj = new JSONObject(respString.toString());
+					userRes = new Response(respJSONObj.getString("userName"),respJSONObj.getString("result"),respJSONObj.getString("dataType"));
+					
 
 					Log.d("readFile " , "Response " + respJSONObj.getString("userName"));
-					Log.d("readFile ", " Response " + respJSONObj.getString("type"));
+					//Log.d("readFile ", " Response " + respJSONObj.getString("type"));
 					Log.d("readFile ", " Response " + respJSONObj.getString("result"));
+				
 					//responseMap = new HashMap<>();
 
 					//responseMap.put("userName", respJSONObj.getString("userName"));
 					//responseMap.put("result", respJSONObj.getString("result"));
-					responseMap.put(respJSONObj.getString("userName"),respJSONObj.getString("result"));
+					//responseDataType = respJSONObj.getString("dataType");
+					//responseMap.put(respJSONObj.getString("userName"),respJSONObj.getString("result"));
 
 					//File file = new File(path);
 					//boolean deleted = file.delete();
@@ -260,6 +263,8 @@ public class ExternalStorageUtil extends Activity  {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
+		return userRes;
 	}
 }
