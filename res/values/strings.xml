@@ -28,5 +28,7 @@
     <string name="label_me">ME</string>
     <string name="label_peers">PEERS</string>
     <string name="title_activity_cumulative_response">CumulativeResponseActivity</string>
+    <string name="title_activity_good_days">GoodDaysActivity</string>
+    <string name="title_activity_response_good_sleep_fragment">ResponseGoodSleepFragment</string>
 
 </resources>

@@ -55,6 +55,8 @@ public class ImageGridAdapter extends BaseAdapter {
 				imageView.setImageResource(R.drawable.ic_food);
 			}else if(mobile.equals("Weight")){
 				imageView.setImageResource(R.drawable.ic_food);
+			}else if(mobile.equals("Good Days")){
+				imageView.setImageResource(R.drawable.ic_food);
 			}
  
 		} else {

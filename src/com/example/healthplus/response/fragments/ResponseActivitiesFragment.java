@@ -62,7 +62,7 @@ private String TAG = "ResponseActivitiesFragment";
 		for (Map.Entry<String, String> entry : responseMap.entrySet()) {
 			counter = counter + 1;
 
-			mPieChart.addPieSlice(new PieModel("Distance", Float.parseFloat(entry.getValue()), getColor(counter)));
+			mPieChart.addPieSlice(new PieModel(entry.getKey(), Float.parseFloat(entry.getValue()), getColor(counter)));
 		}		
 		mPieChart.startAnimation();
 		return view;

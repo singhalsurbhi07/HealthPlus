@@ -39,6 +39,9 @@ public class OptionsActivity extends Activity {
 		}else if(receivedOption.equals("Customise")){
 			Intent i = new Intent(this,UserQuery.class);
 			startActivity(i);
+		}else if(receivedOption.equals("Good Days")){
+			Intent i = new Intent(this,GoodDaysActivity.class);
+			startActivity(i);
 		}
 		// or ft.add(R.id.your_placeholder, new FooFragment());
 		// Execute the changes specified

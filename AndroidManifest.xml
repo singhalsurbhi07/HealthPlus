@@ -85,6 +85,14 @@
             android:name=".CumulativeResponseActivity"
             android:label="@string/title_activity_cumulative_response" >
         </activity>
+        <activity
+            android:name=".GoodDaysActivity"
+            android:label="@string/title_activity_good_days" >
+        </activity>
+        <activity
+            android:name=".ResponseGoodSleepFragment"
+            android:label="@string/title_activity_response_good_sleep_fragment" >
+        </activity>
     </application>
 
 </manifest>

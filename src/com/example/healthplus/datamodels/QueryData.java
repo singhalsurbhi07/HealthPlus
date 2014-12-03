@@ -14,6 +14,9 @@ public class QueryData {
         "Sleep","Water","Calories Intake","Calories Burn"
     };
 	
+	public static String[] goodDaysCategory = new String[]{"Good Sleep","Good Activities","Overall Healthy Days"};
+	
+	
 	public static Map<String,String> tableMap = new HashMap<>();
 	public static Map<String,String> columnMap = new HashMap<>();
  	//public static Map<String,String> functionMap = new HashMap<>();
@@ -32,6 +35,13 @@ public class QueryData {
 		
 		
 	}
+	
+	public static String bestSleepDays(String startDate, String endDate){
+		String bestSleep = null;
+		bestSleep = "Select COUNT(*)  from sleep " +
+		"where total_minutes_asleep >= 360 and Date  between '" + startDate + "' and '" +endDate +"'";
+		return bestSleep; 
+		}
 	
 	
 	

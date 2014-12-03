@@ -17,9 +17,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.healthplus.datamodels.QueryData;
 import com.example.healthplus.datamodels.Response;
 import com.example.healthplus.response.fragments.ResponseActivitiesFragment;
 import com.example.healthplus.response.fragments.ResponseFoodFragment;
+import com.example.healthplus.response.fragments.ResponseGoodSleepFragment;
 import com.example.healthplus.response.fragments.ResponseSleepFragment;
 import com.example.healthplus.response.fragments.ResponseWaterFragment;
 
@@ -71,6 +73,11 @@ public class CumulativeResponseActivity extends Activity {
 		}else if(dataType.equals("Sleep")){
 			Log.d(TAG,"dataType = sleep");
 			ResponseSleepFragment fragmentDemo = ResponseSleepFragment.newInstance(responseMap);
+			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
+			ft.commit();
+		}else if(dataType.equals(QueryData.goodDaysCategory[0])){
+			Log.d(TAG,"dataType = good sleep");
+			ResponseGoodSleepFragment fragmentDemo = ResponseGoodSleepFragment.newInstance(responseMap);
 			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
 			ft.commit();
 		}

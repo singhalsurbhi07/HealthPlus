@@ -20,7 +20,7 @@ public class MenuActivity extends Activity {
 	GridView gridView;
 	 
 	static final String[] options = new String[] { 
-			"Activities","Food","Sleep","Water","Customise"};
+			"Activities","Food","Sleep","Water","Customise","Good Days"};
  
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
