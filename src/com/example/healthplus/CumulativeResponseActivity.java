@@ -21,6 +21,8 @@ import com.example.healthplus.datamodels.QueryData;
 import com.example.healthplus.datamodels.Response;
 import com.example.healthplus.response.fragments.ResponseActivitiesFragment;
 import com.example.healthplus.response.fragments.ResponseFoodFragment;
+import com.example.healthplus.response.fragments.ResponseGoodActivitiesFragment;
+import com.example.healthplus.response.fragments.ResponseGoodOverallFragment;
 import com.example.healthplus.response.fragments.ResponseGoodSleepFragment;
 import com.example.healthplus.response.fragments.ResponseSleepFragment;
 import com.example.healthplus.response.fragments.ResponseWaterFragment;
@@ -80,6 +82,18 @@ public class CumulativeResponseActivity extends Activity {
 			ResponseGoodSleepFragment fragmentDemo = ResponseGoodSleepFragment.newInstance(responseMap);
 			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
 			ft.commit();
+		}else if(dataType.equals(QueryData.goodDaysCategory[1])){
+			Log.d(TAG,"dataType = good sleep");
+			ResponseGoodActivitiesFragment fragmentDemo = ResponseGoodActivitiesFragment.newInstance(responseMap);
+			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
+			ft.commit();
+		}else if(dataType.equals(QueryData.goodDaysCategory[2])){
+			Log.d(TAG,"dataType = good sleep");
+			ResponseGoodOverallFragment fragmentDemo = ResponseGoodOverallFragment.newInstance(responseMap);
+			ft.replace(R.id.fragment_cumulative_response_placeholder, fragmentDemo);
+			ft.commit();
+		}else{
+			Log.d(TAG,"No datatype matched. not sure which fragment to show");
 		}
 		
 		

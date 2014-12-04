@@ -40,20 +40,23 @@ public class QueryData {
 		String bestSleep = null;
 		bestSleep = "Select COUNT(*)  from sleep " +
 		"where total_minutes_asleep >= 360 and Date  between '" + startDate + "' and '" +endDate +"'";
+		Log.d("QueryData",bestSleep);
 		return bestSleep; 
 		}
 	
-	public String bestActivityDays(String startDate, String endDate){
+	public static String bestActivityDays(String startDate, String endDate){
 		String bestActivity = null;
 		bestActivity = " Select COUNT(*)  from Activities " +
 				" where steps >= 8000 and calories_out>= 1000 and Date  between '" + startDate + "' and '" +endDate +"'";
+		Log.d("QueryData",bestActivity);
 		return bestActivity; 
 	}
 	
-	public String bestFoodDays(String startDate, String endDate){
+	public static String bestFoodDays(String startDate, String endDate){
 		String bestFood = null;
 		bestFood = " Select COUNT(*) from food F , Activities A " +
 				" where F.calories <= A.calories_out and A.Date  between '" + startDate + "' and '" +endDate +"'";
+		Log.d("QueryData",bestFood);
 		return bestFood; 
 	}
 	

@@ -156,6 +156,10 @@ public class GoodDaysActivity extends FragmentActivity implements AlertPositiveL
 		String query = null;
 		if(category.equals(QueryData.goodDaysCategory[0])){
 			query = QueryData.bestSleepDays(startDateVal, endDateVal);
+		}else if(category.equals(QueryData.goodDaysCategory[1])){
+			query = QueryData.bestActivityDays(startDateVal, endDateVal);
+		}else{
+			query = QueryData.bestFoodDays(startDateVal, endDateVal);
 		}
 		SharedPreferences sharedpreferences = getSharedPreferences("APP_PREF", Context.MODE_PRIVATE);
 		String userName = sharedpreferences.getString("UserName","master");

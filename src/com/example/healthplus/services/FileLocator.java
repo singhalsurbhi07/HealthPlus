@@ -21,7 +21,7 @@ public class FileLocator extends IntentService {
 	SharedPreferences sharedpreferences;
 	boolean isReqFound = false;
 	
-	String resPattern = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ShareViaWifi/response??.txt";
+	//String resPattern = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ShareViaWifi/response??.txt";
 	ExternalStorageUtil util = new ExternalStorageUtil();
 
 	// Must create a default constructor
@@ -38,7 +38,8 @@ public class FileLocator extends IntentService {
 		String userName = sharedpreferences.getString("UserName","master");
 		Log.d("FileLocator userName",userName);
 		// This describes what will happen when service is triggered
-		String reqPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ShareViaWifi/request.json";
+		String reqPath = Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/request.json";
 		
 		//String resPattern = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ShareViaWifi/response??.json";
 
