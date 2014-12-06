@@ -224,10 +224,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
+		double value= 0.0;
 		Cursor cursor = db.rawQuery(queryString, null);
-		cursor.moveToFirst();			
-		double value = cursor.getFloat(0);
-		
+		if(cursor != null || cursor.getCount() > 0 ) {
+			cursor.moveToFirst();			
+			value = cursor.getFloat(0);
+		}
 		cursor.close();
 		
 		return value;
