@@ -31,7 +31,7 @@ public class DateUtil {
 
 		for (int i = 1; i <= 10; i++) {
 
-			cal.add(Calendar.DATE, -1);
+			cal.add(Calendar.DATE, -1);			
 			newDate = dateFormat.format(cal.getTime());			
 			dateMap.put(i, newDate);
 		}
