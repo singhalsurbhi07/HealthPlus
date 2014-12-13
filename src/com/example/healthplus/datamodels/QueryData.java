@@ -39,7 +39,7 @@ public class QueryData {
 	public static String bestSleepDays(String startDate, String endDate){
 		String bestSleep = null;
 		bestSleep = "Select COUNT(*)  from sleep " +
-		"where total_minutes_asleep >= 360 and Date  between '" + startDate + "' and '" +endDate +"'";
+		"where total_minutes_asleep >= 260 and Date  between '" + startDate + "' and '" +endDate +"'";
 		Log.d("QueryData",bestSleep);
 		return bestSleep; 
 		}
@@ -47,7 +47,7 @@ public class QueryData {
 	public static String bestActivityDays(String startDate, String endDate){
 		String bestActivity = null;
 		bestActivity = " Select COUNT(*)  from Activities " +
-				" where steps >= 8000 and calories_out>= 1000 and Date  between '" + startDate + "' and '" +endDate +"'";
+				" where steps >= 1000 and calories_out>= 1000 and Date  between '" + startDate + "' and '" +endDate +"'";
 		Log.d("QueryData",bestActivity);
 		return bestActivity; 
 	}
