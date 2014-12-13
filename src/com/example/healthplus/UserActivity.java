@@ -318,14 +318,14 @@ public class UserActivity extends Activity {
 	     // handle click here
 		Log.d("UserActivity","OnSyncAction");
 		ApiCallHelper helper = new ApiCallHelper();
-		String date = DateUtil.getYesterdayDateString();
+		/*String date = DateUtil.getYesterdayDateString();
 		helper.getUserWaterData(date);
 		helper.getUserSleepData(date);
 		helper.getUserFoodData(date);
-		helper.getUserActivitiesData(date);
+		helper.getUserActivitiesData(date);*/
 		
-		//LoadData loadData = new LoadData();
-		//loadData.loadTenDaysData();
+		LoadData loadData = new LoadData();
+		loadData.loadTenDaysData();
 		
 	  }
 	

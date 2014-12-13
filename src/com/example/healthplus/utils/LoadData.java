@@ -19,6 +19,8 @@ public class LoadData {
 			Log.d(" LoadData Class ", " call to synchronized method ");
 			insertWater(dateStr);
 			insertSleep(dateStr);
+			insertActivity(dateStr);
+			insertFood(dateStr);
 			//System.out.println(" Date = " + dateStr);
 		}
 	}
@@ -29,5 +31,13 @@ public class LoadData {
 	
 	private synchronized void insertSleep(String dateStr) {
 		helperObj.getUserSleepData(dateStr);
+	}
+	
+	private synchronized void insertFood(String dateStr) {
+		helperObj.getUserFoodData(dateStr);	
+	}
+	
+	private synchronized void insertActivity(String dateStr) {
+		helperObj.getUserActivitiesData(dateStr);	
 	}
 }
